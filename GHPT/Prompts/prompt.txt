@@ -6,273 +6,291 @@ Always use the given format, avoid any devitation.
 
 
 // Question : How do I add two numbers inside of Grasshopper?
-// Reasoning: To add two numbers we need to Add. There is an Addition component that performs this function. We need to create two numbers the user can edit, we can use the Number Slider for both numbers. And then we can connect all of the components together
-// Advice: Make sure to set the number sliders to the correct value
+// Reasoning: To add two numbers we need to Add. There is an Addition component that performs this function. We need to create two numbers the user can edit, we can use the Number Slider for both numbers. And then we can Connections all of the components together
 // JSON: 
 {
-	'add_to_canvas': {
-		'name': 'Number Slider',
-		'id' : 1, // This number must be unique
-	},
-	'add_to_canvas': {
-		'name': 'Number Slider',
-		'id' : 2,
-	},
-	'add_to_canvas': {
-		'name': 'Addition',
-		'id' : 3,
-	},
-	'connect' : {
-		'from_component': { // Number Slider,
-			'id': 1
-			'from_output': 'number'
+	'Advice': 'Make sure to set the number sliders to the correct value',
+	'Additions': [
+		{
+			'Name': 'Number Slider',
+			'Id' : 1, // This number must be unique
+		},
+		{
+			'Name': 'Number Slider',
+			'Id' : 2,
+		},
+		{
+			'Name': 'Addition',
+			'Id' : 3,
 		}
-		'to_component': { // Addition
-			'id': 3,
-			'to_input': 'A'
+	],
+	'Connectionsions' : [
+		{
+			'To': { // Addition
+				'Id': 3,
+				'ParameterName': 'A'
+			},
+			'From': { // Number Slider,
+				'Id': 1,
+				'ParameterName': 'number'
+			}
+		},
+		 {
+			'To': { // Addition
+				'Id': 3,
+				'ParameterName': 'B'
+			}
+			'From': { // Number Slider,
+				'Id': 2,
+				'ParameterName': 'number'
+			}
 		}
-	},
-	'connect' : {
-		'from_component': { // Number Slider,
-			'id': 2
-			'from_output': 'number'
-		}
-		'to_component': { // Addition
-			'id': 3,
-			'to_input': 'B'
-		}
-	},
+	]
 }
 
 // Question : How do I add two numbers inside of Grasshopper?
-// Reasoning: To add two numbers we need to Add. There is an Addition component that performs this function. We need to create two numbers the user can edit, we can use the Number Slider for both numbers. And then we can connect all of the components together
-// Advice: Make sure to set the number sliders to the correct value
+// Reasoning: To add two numbers we need to Add. There is an Addition component that performs this function. We need to create two numbers the user can edit, we can use the Number Slider for both numbers. And then we can Connections all of the components together
 // JSON: 
 {
-	'add_to_canvas': {
-		'name': 'Number Slider',
-		'id' : 1, // This number must be unique
-		'value': 0..25..100 // This is optional
-	},
-	'add_to_canvas': {
-		'name': 'Number Slider',
-		'id' : 2,
-		'value': -50..25..100 // This is optional
-	},
-	'connect' : {
-		'from_component': { // Number Slider,
-			'id': 1
-			'from_output': 'number'
+	'Advice': 'Make sure to set the number sliders to the correct value',
+	'Additions': [
+		{
+			'Name': 'Number Slider',
+			'Id' : 1, // This number must be unique
+			'value': 0..25..100, // This is optional
+		},
+		{
+			'Name': 'Number Slider',
+			'Id' : 2,
+			'value': -50..25..100, // This is optional
+		},
+	],
+	'Connections' : [
+		{
+			'To': { // Addition
+				'Id': 3,
+				'ParameterName': 'A'
+			}
+			'From': { // Number Slider,
+				'Id': 1,
+				'ParameterName': 'number'
+			}
+		},
+		{
+			'To': { // Addition
+				'Id': 3,
+				'ParameterName': 'B'
+			}
+			'From': { // Number Slider,
+				'Id': 2,
+				'ParameterName': 'number'
+			}
 		}
-		'to_component': { // Addition
-			'id': 3,
-			'to_input': 'A'
-		}
-	},
-	'connect' : {
-		'from_component': { // Number Slider,
-			'id': 2
-			'from_output': 'number'
-		}
-		'to_component': { // Addition
-			'id': 3,
-			'to_input': 'B'
-		}
-	},
+	]
 }
 
 // Question: How do I create a cup shape in grasshopper
 // Reasoning: To create a cup shape in Grasshopper, we'll first create a circle using a "Circle CNR" component, which will act as the base of the cup. Then, we will use a "Move" component to move the base circle vertically to create the upper rim of the cup. To create the body of the cup, we'll loft these two circles using a "Loft" component.
-// Advice: Remember, to properly define the cup's dimensions using the number slider
 // JSON:
 {
-    'add_to_canvas': {
-        'name': 'Circle CNR',
-        'id' : 1
-    },
-    'add_to_canvas': {
-        'name': 'Move',
-        'id' : 2
-    },
-    'add_to_canvas': {
-        'name': 'Loft',
-        'id' : 3
-    },
-    'connect' : {
-        'from_component': {
-            'id': 1,
-            'from_output': 'circle'
-        },
-        'to_component': {
-            'id': 2,
-            'to_input': 'geometry'
-        }
-    },
-    'connect' : {
-        'from_component': {
-            'id': 1,
-            'from_output': 'circle'
-        },
-        'to_component': {
-            'id': 3,
-            'to_input': 'curves'
-        }
-    },
-    'connect' : {
-        'from_component': {
-            'id': 2,
-            'from_output': 'geometry'
-        },
-        'to_component': {
-            'id': 3,
-            'to_input': 'curves'
-        }
-    }
+	'Advice': 'Remember, to properly define the cup\'s dimensions using the number slider',
+	'Additions' : [
+		{
+			'Name': 'Circle CNR',
+			'Id' : 1
+		},
+		{
+			'Name': 'Move',
+			'Id' : 2
+		},
+		{
+			'Name': 'Loft',
+			'Id' : 3
+		}
+	],
+	'Connections' : [
+		{
+			'To': {
+				'Id': 2,
+				'ParameterName': 'Geometry'
+			}
+			'From': {
+				'Id': 1,
+				'ParameterName': 'Circle'
+			},
+		},
+		'Connections' : [
+			{
+				'To': {
+					'Id': 3,
+					'ParameterName': 'Curves'
+				},
+				'From': {
+					'Id': 1,
+					'ParameterName': 'Circle'
+				}
+			},
+			{
+				'To': {
+					'Id': 3,
+					'ParameterName': 'Curves'
+				},
+				'From': {
+					'Id': 2,
+					'ParameterName': 'Geometry'
+				}
+			}
+		]
+	]
 }
 
 // Question: How do I create a twisty skyscraper?
 // Reasoning: We can create the 'twist' using the twist component, so lets extrude a rectangle and twist it!
-// Advice: Make sure to use reasonable inputs or the skyscraper will look weird
 // JSON:
 {
-	'add_to_canvas': {
-		'name': 'Rectangle',
-		'id' : 1
-	},
-	'add_to_canvas'	: {
-		'name': 'Number Slider',
-		'id': 2,
-		'value': '0..50..100',
-	},
-	'add_to_canvas': {
-		'name': 'Unit Z',
-		'id': 3,
-	},
-	'add_to_canvas': {
-		'name': 'Extrusion',
-		'id' : 4
-	},
-	'add_to_canvas'	: {
-		'name': 'Number Slider',
-		'id': 5,
-		'value': '0..90..360'
-	},
-	'add_to_canvas' : {
-		'name' : 'Line',
-		'id': 6
-	},
-	'add_to_canvas' : {
-		'name': 'Point'
-		'id': 7,
-		'value': '{0,0,0}'
-	},
-	'add_to_canvas' : {
-		'name': 'Point'
-		'id': 8,
-		'value': '{0,0,250}'
-	},
-	'add_to_canvas': {
-		'name': 'Twist',
-		'id' : 9
-	},
-	'add_to_canvas': {
-		'name': 'Solid Union',
-		'id' : 10
-	},
-	'add_to_canvas': {
-		'name': 'Brep Join',
-		'id' : 11
-	},
-	'connect' : {
-		'from_component': {
-			'id': 1,
-			'from_output': 'Rectangle'
+	'Advice': 'Make sure to use reasonable inputs or the skyscraper will look weird',
+	'Additions': [
+		{
+			'Name': 'Rectangle',
+			'Id' : 1
 		},
-		'to_component': {
-			'id': 4,
-			'to_input': 'Base'
-		}
-	},
-	'connect' : {
-		'from_component': {
-			'id': 2,
-			'from_output': 'Number'
+		{
+			'Name': 'Number Slider',
+			'Id': 2,
+			'Value': '0..50..100',
 		},
-		'to_component': {
-			'id': 3,
-			'to_input': 'Factor'
-		}
-	},
-	'connect' : {
-		'from_component': {
-			'id': 5,
-			'from_output': 'Number'
+		{
+			'Name': 'Unit Z',
+			'Id': 3,
 		},
-		'to_component': {
-			'id': 9,
-			'to_input': 'Angle'
-		}
-	},
-	'connect' : {
-		'from_component': {
-			'id': 3,
-			'from_output': 'Unit vector'
+		{
+			'Name': 'Extrusion',
+			'Id' : 4
 		},
-		'to_component': {
-			'id': 4,
-			'to_input': 'Direction'
-		}
-	},
-	'connect' : {
-		'from_component': {
-			'id': 4,
-			'from_output': 'Extrusion'
+		{
+			'Name': 'Number Slider',
+			'Id': 5,
+			'Value': '0..90..360'
 		},
-		'to_component': {
-			'id': 9,
-			'to_input': 'Geometry'
-		}
-	},
-	'connect' : {
-		'from_component': {
-			'id': 7,
-			'from_output': 'Point'
+		{
+			'Name' : 'Line',
+			'Id': 6
 		},
-		'to_component': {
-			'id': 6,
-			'to_input': 'Start Point'
-		}
-	},
-	'connect' : {
-		'from_component': {
-			'id': 8,
-			'from_output': 'Point'
+		{
+			'Name': 'Point'
+			'Id': 7,
+			'value': '{0,0,0}'
 		},
-		'to_component': {
-			'id': 6,
-			'to_input': 'End Point'
-		}
-	},
-	'connect' : {
-		'from_component': {
-			'id': 9,
-			'from_output': 'Geometry'
+		{
+			'Name': 'Point'
+			'Id': 8,
+			'value': '{0,0,250}'
 		},
-		'to_component': {
-			'id': 10,
-			'to_input': 'Breps'
-		}
-	},
-	'connect' : {
-		'from_component': {
-			'id': 10,
-			'from_output': 'Result'
+		{
+			'Name': 'Twist',
+			'Id' : 9
 		},
-		'to_component': {
-			'id': 11,
-			'to_input': 'Breps'
+		{
+			'Name': 'Solid Union',
+			'Id' : 10
+		},
+		{
+			'Name': 'Brep Join',
+			'Id' : 11
+		},
+	]
+	'Connections' : [
+		{
+			'To': {
+				'Id': 4,
+				'ParameterName': 'Base'
+			},
+			'From': {
+				'Id': 1,
+				'ParameterName': 'Rectangle'
+			}
+		},
+		{
+			'To': {
+				'Id': 3,
+				'ParameterName': 'Factor'
+			},
+			'From': {
+				'Id': 2,
+				'ParameterName': 'Number'
+			}
+		},
+		{
+			'To': {
+				'Id': 9,
+				'ParameterName': 'Angle'
+			},
+			'From': {
+				'Id': 5,
+				'ParameterName': 'Number'
+			}
+		},
+		{
+			'To': {
+				'Id': 4,
+				'ParameterName': 'Direction'
+			},
+			'From': {
+				'Id': 3,
+				'ParameterName': 'Unit vector'
+			}
+		},
+		{
+			'To': {
+				'Id': 9,
+				'ParameterName': 'Geometry'
+			},
+			'From': {
+				'Id': 4,
+				'ParameterName': 'Extrusion'
+			}
+		},
+		{
+			'To': {
+				'Id': 6,
+				'ParameterName': 'Start Point'
+			},
+			'From': {
+				'Id': 7,
+				'ParameterName': 'Point'
+			}
+		},
+		{
+			'To': {
+				'Id': 6,
+				'ParameterName': 'End Point'
+			},
+			'From': {
+				'Id': 8,
+				'ParameterName': 'Point'
+			}
+		},
+		{
+			'To': {
+				'Id': 10,
+				'ParameterName': 'Breps'
+			},
+			'From': {
+				'Id': 9,
+				'ParameterName': 'Geometry'
+			}
+		},
+		{
+			'To': {
+				'Id': 11,
+				'ParameterName': 'Breps'
+			},
+			'From': {
+				'Id': 10,
+				'ParameterName': 'Result'
+			}
 		}
-	},
+	]
 }
 
 // Question: {QUESTION}
