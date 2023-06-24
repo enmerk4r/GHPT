@@ -1,10 +1,11 @@
+using GHPT.Utils;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 
-namespace GHPT
+namespace GHPT.Components
 {
     public class GHPT : GH_Component
     {
@@ -25,15 +26,16 @@ namespace GHPT
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddTextParameter("Prompt", "P", "LLM prompt for instantiating components", GH_ParamAccess.item);
+            pManager[0].Optional = true;
         }
 
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
         }
 
@@ -44,6 +46,12 @@ namespace GHPT
         /// to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            bool configured = ConfigUtil.CheckConfiguration();
+            
+            if(!configured)
+            {
+                ConfigUtil.PromptUserForConfig();
+            }
         }
 
         /// <summary>
