@@ -1,0 +1,30 @@
+﻿using GHPT.Prompts;
+using GHPT.Utils;
+using NUnit.Framework;
+using System.Collections;
+using System.Threading.Tasks;
+
+namespace UnitTests
+{
+
+    public sealed class QuestionTests
+    {
+
+        [TestCaseSource(nameof(Queries))]
+        public async Task GetResponseDataTest(string question)
+        {
+            PromptData data = await PromptUtils.AskQuestion(question);
+            Assert.That(data.Connections, Is.Not.Empty);
+            Assert.That(data.Additions, Is.Not.Empty);
+        }
+
+        public static IEnumerable Queries
+        {
+            get
+            {
+                yield return "How can I Create a Cylinder?";
+            }
+        }
+
+    }
+}

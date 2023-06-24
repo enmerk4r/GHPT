@@ -3,14 +3,6 @@
 namespace GHPT.Prompts
 {
 
-    public struct Response
-    {
-        public string Question { get; set; }
-        public string Reasoning { get; set; }
-        public string Advice { get; set; }
-        public string Payload { get; set; }
-    }
-
     public struct PromptData
     {
         public string Advice { get; set; }
