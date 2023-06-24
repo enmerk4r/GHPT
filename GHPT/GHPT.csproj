@@ -6,11 +6,23 @@
     <Title>GHPT</Title>
     <Description>Description of GHPT</Description>
     <TargetExt>.gha</TargetExt>
+    <LangVersion>11</LangVersion>
+	<Nullable>annotations</Nullable>
   </PropertyGroup>
 	
   <ItemGroup>
+    <None Remove="Prompts\prompt.txt" />
     <None Remove="UI\ConfigPromptWindow.xaml" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <EmbeddedResource Include="Prompts\prompt.txt" />
+  </ItemGroup>
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>TestProject1</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup> 
   
   <ItemGroup>
     <PackageReference Include="Grasshopper" Version="7.13.21348.13001" IncludeAssets="compile;build" />
