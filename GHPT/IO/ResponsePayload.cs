@@ -10,7 +10,7 @@ namespace GHPT.IO
     public class ResponsePayload
     {
         [JsonProperty("id")]
-        string Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("choices")]
         public List<Choice> Choices { get; set; }
