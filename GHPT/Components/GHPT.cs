@@ -6,11 +6,14 @@ using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
+using System.Windows.Media.Animation;
 
 namespace GHPT.Components
 {
     public class GHPT : GH_Component, IGH_InitCodeAware
     {
+        private GH_Document _doc;
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
         /// constructor without any arguments.
@@ -50,6 +53,8 @@ namespace GHPT.Components
         /// to store data in output parameters.</param>
         protected async override void SolveInstance(IGH_DataAccess DA)
         {
+            _doc = OnPingDocument();
+
             bool configured = ConfigUtil.CheckConfiguration();
             
             if(!configured)
@@ -70,6 +75,41 @@ namespace GHPT.Components
             ResponsePayload response = await ClientUtil.Ask(prompt);
 
             string content = response.Choices.First().Message.Content;
+
+            
+        }
+
+        public void AddComponents()
+        {
+            List<string> components = new List<string>()
+            {
+                "Circle",
+                "Circle CNR",
+                "Close Curve",
+                "Arc"
+            };
+
+            float x = this.Attributes.Pivot.X + 200;
+            float y = this.Attributes.Pivot.Y;
+
+            foreach (string name in components)
+            {
+                GraphUtil.InstantiateComponent(_doc, name, new System.Drawing.PointF(x, y));
+                x += 200;
+            }
+        }
+
+        public void SelfDestruct()
+        {
+            this._doc.RemoveObject(this.Attributes, true);
+        }
+
+        protected override void AfterSolveInstance()
+        {
+            this.AddComponents();
+            base.AfterSolveInstance();
+            Grasshopper.Instances.RedrawCanvas();
+            this.SelfDestruct();
         }
 
         public void SetInitCode(string code)
