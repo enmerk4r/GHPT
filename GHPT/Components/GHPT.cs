@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace GHPT.Components
 {
-    public class GHPT : GH_Component
+    public class GHPT : GH_Component, IGH_InitCodeAware
     {
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
@@ -70,6 +70,11 @@ namespace GHPT.Components
             ResponsePayload response = await ClientUtil.Ask(prompt);
 
             string content = response.Choices.First().Message.Content;
+        }
+
+        public void SetInitCode(string code)
+        {
+            this.Params.Input[0].AddVolatileData(new Grasshopper.Kernel.Data.GH_Path(0), 0, code);
         }
 
         /// <summary>
