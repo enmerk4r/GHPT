@@ -23,9 +23,18 @@ namespace GHPT.Utils
 
         public static PromptData GetPromptDataFromResponse(string chatGPTJson)
         {
-            ;
+            JsonSerializerOptions options = new()
+            {
+                AllowTrailingCommas = true,
+                PropertyNameCaseInsensitive = true,
+                IgnoreReadOnlyFields = true,
+                IgnoreReadOnlyProperties = true,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                WriteIndented = true,
+                IncludeFields = true
+            };
 
-            PromptData result = JsonSerializer.Deserialize<PromptData>(chatGPTJson);
+            PromptData result = JsonSerializer.Deserialize<PromptData>(chatGPTJson, options);
 
             return result;
         }
