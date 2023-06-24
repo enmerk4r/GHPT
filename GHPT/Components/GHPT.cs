@@ -1,15 +1,7 @@
-using GHPT.IO;
 using GHPT.Prompts;
 using GHPT.Utils;
-using Grasshopper;
 using Grasshopper.Kernel;
-using Rhino.Geometry;
-using Rhino.NodeInCode;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Windows.Media.Animation;
 
 namespace GHPT.Components
 {
@@ -29,6 +21,13 @@ namespace GHPT.Components
             "A component that lets you use ChatGPT to instantiate Grasshopper snippets from a prompt",
             "GHPT", "Prompt")
         {
+            Ready += OnReady;
+        }
+
+        private void OnReady(object sender, EventArgs e)
+        {
+            this.AddComponents();
+            Grasshopper.Instances.RedrawCanvas();
         }
 
         /// <summary>
@@ -59,8 +58,8 @@ namespace GHPT.Components
             _doc = OnPingDocument();
 
             bool configured = ConfigUtil.CheckConfiguration();
-            
-            if(!configured)
+
+            if (!configured)
             {
                 ConfigUtil.PromptUserForConfig();
             }
@@ -76,7 +75,10 @@ namespace GHPT.Components
             DA.GetData(1, ref temperature);
 
             _data = await PromptUtils.AskQuestion(prompt);
+            Ready?.Invoke(this, new EventArgs());
         }
+
+        public event EventHandler Ready;
 
         public void AddComponents()
         {
@@ -93,12 +95,13 @@ namespace GHPT.Components
 
         public void SelfDestruct()
         {
-            this._doc.RemoveObject(this.Attributes, true);
+            return;
+
+            this._doc?.RemoveObject(this.Attributes, true);
         }
 
         protected override void AfterSolveInstance()
         {
-            this.AddComponents();
             base.AfterSolveInstance();
             Grasshopper.Instances.RedrawCanvas();
             this.SelfDestruct();
@@ -122,6 +125,6 @@ namespace GHPT.Components
         /// It is vital this Guid doesn't change otherwise old ghx files 
         /// that use the old ID will partially fail during loading.
         /// </summary>
-        public override Guid ComponentGuid => new Guid("ea3a2f90-b8b9-406f-bb66-f2a4b9fa3812");
+        public override Guid ComponentGuid => new("ea3a2f90-b8b9-406f-bb66-f2a4b9fa3812");
     }
 }

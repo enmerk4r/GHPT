@@ -23,6 +23,8 @@ namespace GHPT.Utils
 
         public static PromptData GetPromptDataFromResponse(string chatGPTJson)
         {
+            ;
+
             PromptData result = JsonSerializer.Deserialize<PromptData>(chatGPTJson);
 
             return result;
