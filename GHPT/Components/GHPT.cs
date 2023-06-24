@@ -1,9 +1,11 @@
+using GHPT.IO;
 using GHPT.Utils;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GHPT.Components
 {
@@ -29,7 +31,9 @@ namespace GHPT.Components
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddTextParameter("Prompt", "P", "LLM prompt for instantiating components", GH_ParamAccess.item);
-            pManager[0].Optional = true;
+            pManager.AddNumberParameter("Temperature", "T", "Controls how \"creatively\" the network responds to your prompt", GH_ParamAccess.item, 0.7);
+
+            pManager[1].Optional = true;
         }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace GHPT.Components
         /// </summary>
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and 
         /// to store data in output parameters.</param>
-        protected override void SolveInstance(IGH_DataAccess DA)
+        protected async override void SolveInstance(IGH_DataAccess DA)
         {
             bool configured = ConfigUtil.CheckConfiguration();
             
@@ -52,6 +56,20 @@ namespace GHPT.Components
             {
                 ConfigUtil.PromptUserForConfig();
             }
+            else
+            {
+                ConfigUtil.LoadConfig();
+            }
+
+            string prompt = string.Empty;
+            double temperature = 0.7;
+
+            DA.GetData(0, ref prompt);
+            DA.GetData(1, ref temperature);
+
+            ResponsePayload response = await ClientUtil.Ask(prompt);
+
+            string content = response.Choices.First().Message.Content;
         }
 
         /// <summary>
