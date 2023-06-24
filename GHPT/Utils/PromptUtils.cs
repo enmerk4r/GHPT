@@ -22,15 +22,20 @@ namespace GHPT.Utils
         }
 
         public static PromptData GetPromptDataFromResponse(string chatGPTJson)
-            => JsonSerializer.Deserialize<PromptData>(chatGPTJson);
+        {
+            PromptData result = JsonSerializer.Deserialize<PromptData>(chatGPTJson);
+
+            return result;
+        }
 
         public static async Task<PromptData> AskQuestion(string question)
         {
             var payload = await ClientUtil.Ask(Prompt.GetPrompt(question));
-            string payloadJson = string.Empty;
-            ;
+            string payloadJson = payload.Choices.FirstOrDefault().Message.Content;
 
-            return GetPromptDataFromResponse(GetChatGPTJson(payloadJson));
+            var returnValue = GetPromptDataFromResponse(GetChatGPTJson(payloadJson));
+
+            return returnValue;
         }
 
     }

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-using GHPT.IO;
+﻿using GHPT.IO;
 using Newtonsoft.Json;
+using System.IO;
+using System.Reflection;
 
 namespace GHPT.Utils
 {
@@ -34,7 +28,7 @@ namespace GHPT.Utils
 
         public static void LoadConfig()
         {
-            using (StreamReader reader = new StreamReader(ConfigurationFilePath))
+            using (StreamReader reader = new(ConfigurationFilePath))
             {
                 string contents = reader.ReadToEnd();
                 _config = JsonConvert.DeserializeObject<GPTConfig>(contents);
@@ -43,7 +37,7 @@ namespace GHPT.Utils
 
         public static void SaveConfig()
         {
-            using (StreamWriter writer = new StreamWriter(ConfigurationFilePath))
+            using (StreamWriter writer = new(ConfigurationFilePath))
             {
                 string config = JsonConvert.SerializeObject(_config);
                 writer.Write(config);
@@ -52,7 +46,7 @@ namespace GHPT.Utils
 
         public static void PromptUserForConfig()
         {
-            ConfigPromptWindow window = new ConfigPromptWindow();
+            ConfigPromptWindow window = new();
             window.ShowDialog();
 
             _config = window.Config;

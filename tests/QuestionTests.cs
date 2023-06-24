@@ -10,6 +10,23 @@ namespace UnitTests
     public sealed class QuestionTests
     {
 
+        [SetUp]
+        public static void SetupToken()
+        {
+            bool configured = ConfigUtil.CheckConfiguration();
+
+            if (!configured)
+            {
+                ConfigUtil.PromptUserForConfig();
+            }
+            else
+            {
+                ConfigUtil.LoadConfig();
+            }
+
+            Assert.That(ConfigUtil.CheckConfiguration(), Is.True);
+        }
+
         [TestCaseSource(nameof(Queries))]
         public async Task GetResponseDataTest(string question)
         {
