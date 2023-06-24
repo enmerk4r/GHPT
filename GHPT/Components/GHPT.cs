@@ -1,8 +1,10 @@
 using GHPT.IO;
+using GHPT.Prompts;
 using GHPT.Utils;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
+using Rhino.NodeInCode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace GHPT.Components
     public class GHPT : GH_Component, IGH_InitCodeAware
     {
         private GH_Document _doc;
+        private PromptData _data;
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
         /// constructor without any arguments.
@@ -72,31 +75,20 @@ namespace GHPT.Components
             DA.GetData(0, ref prompt);
             DA.GetData(1, ref temperature);
 
-            ResponsePayload response = await ClientUtil.Ask(prompt);
-
-            string content = response.Choices.First().Message.Content;
-
-            
+            _data = await PromptUtils.AskQuestion(prompt);
         }
 
         public void AddComponents()
         {
-            List<string> components = new List<string>()
-            {
-                "Circle",
-                "Circle CNR",
-                "Close Curve",
-                "Arc"
-            };
-
             float x = this.Attributes.Pivot.X + 200;
             float y = this.Attributes.Pivot.Y;
 
-            foreach (string name in components)
+            foreach (Addition addition in _data.Additions)
             {
-                GraphUtil.InstantiateComponent(_doc, name, new System.Drawing.PointF(x, y));
+                GraphUtil.InstantiateComponent(_doc, addition.Name, new System.Drawing.PointF(x, y));
                 x += 200;
             }
+
         }
 
         public void SelfDestruct()
