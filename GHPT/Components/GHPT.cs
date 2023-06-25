@@ -106,6 +106,8 @@ namespace GHPT.Components
                 GraphUtil.InstantiateComponent(_doc, addition, new System.Drawing.PointF(x, y));
                 x += 200;
             }
+
+            this.CreateAdvicePanel(_data.Advice);
         }
 
         private void ConnectComponents()
@@ -138,17 +140,35 @@ namespace GHPT.Components
         public void CreatePromptPanel()
         {
             string code = (string)this._queue.Dequeue();
+            var pivot = new System.Drawing.PointF(this.Attributes.Pivot.X - 250, this.Attributes.Pivot.Y - 50);
+            this.CreatePanel(code, "GHPT Prompt", pivot);
 
-            GH_Panel panel = new();
-            panel.NickName = "GHPT Prompt";
+        }
 
-            panel.UserText = code;
+        public void CreateAdvicePanel(string advice)
+        {
+            var pivot = new System.Drawing.PointF(this.Attributes.Pivot.X, this.Attributes.Pivot.Y - 250);
+            this.CreatePanel(advice, "Advice", pivot, System.Drawing.Color.LightBlue);
+        }
+
+        public void CreatePanel(string content, string nickName, System.Drawing.PointF pivot)
+        {
+            this.CreatePanel(content, nickName, pivot, System.Drawing.Color.FromArgb(255, 255, 250, 90));
+        }
+
+
+        public void CreatePanel(string content, string nickName, System.Drawing.PointF pivot, System.Drawing.Color color)
+        {
+            GH_Panel panel = new GH_Panel();
+            panel.NickName = nickName;
+
+            panel.UserText = content;
+
+            panel.Properties.Colour = color;
             //panel.AddVolatileData(new Grasshopper.Kernel.Data.GH_Path(0), 0, code);
 
             _doc.AddObject(panel, false);
-
-            panel.Attributes.Pivot = new System.Drawing.PointF(this.Attributes.Pivot.X - 250, this.Attributes.Pivot.Y - 50);
-
+            panel.Attributes.Pivot = pivot;
         }
 
         public void AdvanceSpinner()
