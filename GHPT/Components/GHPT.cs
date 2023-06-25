@@ -1,7 +1,14 @@
 using GHPT.Prompts;
 using GHPT.Utils;
+using Grasshopper;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Special;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace GHPT.Components
 {
@@ -9,6 +16,9 @@ namespace GHPT.Components
     {
         private GH_Document _doc;
         private PromptData _data;
+        private bool _spinning;
+
+        private Queue _queue;
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
         /// constructor without any arguments.
@@ -22,10 +32,12 @@ namespace GHPT.Components
             "GHPT", "Prompt")
         {
             Ready += OnReady;
+            _queue = new Queue();
         }
 
         private void OnReady(object sender, EventArgs e)
         {
+            this._spinning = false;
             this.AddComponents();
             Grasshopper.Instances.RedrawCanvas();
         }
@@ -73,7 +85,11 @@ namespace GHPT.Components
 
             DA.GetData(0, ref prompt);
             DA.GetData(1, ref temperature);
-
+            this._spinning = true;
+            Task.Run(() =>
+            {
+                this.RunSpinner();
+            });
             _data = await PromptUtils.AskQuestion(prompt);
             Ready?.Invoke(this, new EventArgs());
         }
@@ -90,26 +106,80 @@ namespace GHPT.Components
                 GraphUtil.InstantiateComponent(_doc, addition, new System.Drawing.PointF(x, y));
                 x += 200;
             }
-
         }
 
-        public void SelfDestruct()
-        {
-            return;
-
-            this._doc?.RemoveObject(this.Attributes, true);
-        }
 
         protected override void AfterSolveInstance()
         {
             base.AfterSolveInstance();
+            if (this._queue.Count > 0)
+            {
+                this.CreatePromptPanel();
+            }
             Grasshopper.Instances.RedrawCanvas();
-            this.SelfDestruct();
+            
         }
 
         public void SetInitCode(string code)
         {
+            this._queue.Enqueue(code);
+            GH_Panel panel = new GH_Panel();
             this.Params.Input[0].AddVolatileData(new Grasshopper.Kernel.Data.GH_Path(0), 0, code);
+        }
+
+        public void CreatePromptPanel()
+        {
+            string code = (string)this._queue.Dequeue();
+
+            GH_Panel panel = new GH_Panel();
+            panel.NickName = "GHPT Prompt";
+
+            panel.UserText = code;
+            //panel.AddVolatileData(new Grasshopper.Kernel.Data.GH_Path(0), 0, code);
+
+            _doc.AddObject(panel, false);
+
+            panel.Attributes.Pivot = new System.Drawing.PointF(this.Attributes.Pivot.X - 250, this.Attributes.Pivot.Y - 50);
+
+        }
+
+        public void AdvanceSpinner()
+        {
+            List<string> sequence = new List<string>()
+            {
+                "Thinking: \\", "Thinking: |", "Thinking: /", "Thinking: -"
+            };
+
+            if (string.IsNullOrEmpty(this.Message))
+            {
+                this.Message = sequence[0];
+            }
+            else
+            {
+                int index = sequence.IndexOf(this.Message);
+                int nextIndex = index + 1;
+                if (nextIndex >= sequence.Count)
+                {
+                    nextIndex = 0;
+                }
+
+                this.Message = sequence[nextIndex];
+            }
+            Grasshopper.Instances.ActiveCanvas.BeginInvoke(new Action(() => {
+                Grasshopper.Instances.RedrawCanvas();
+            }));
+            
+            
+        }
+
+        public void RunSpinner()
+        {
+            while (_spinning)
+            {
+                this.AdvanceSpinner();
+                Thread.Sleep(200);
+            }
+            this.Message = null;
         }
 
         /// <summary>
