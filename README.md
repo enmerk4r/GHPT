@@ -50,6 +50,12 @@ To take advantage of this functionality, double click an empty space on the canv
 
 `GHPT = <your prompt goes here>`
 
-After allowing the module some time to think, an organized node graph will appear.
+After allowing the module some time to think, an organized node graph will appear. Additionally, an "Advice" text panel will be create to display advice/feedback from GPT.
 
 In the event that a prompt is too complex, the module will display an error message.
+
+
+Prompt guide - add these text snippet at the end of your request for more specific instructions to GPT
+"if there are questions, put them in the Advice section" -> if your prompt is too complex for GPT, this allow GPT to ask for clarification
+"prefer Circle over Circle CNR" -> instruct GPT to prefer a component over another one with similar name/function
+"be specific" -> 
