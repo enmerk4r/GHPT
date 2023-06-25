@@ -91,7 +91,10 @@ namespace GHPT.Components
             DA.GetData(1, ref temperature);
 
             if (string.IsNullOrEmpty(prompt))
+            {
+                previousPrompt = prompt;
                 return;
+            }
 
             if (prompt == previousPrompt)
                 return;

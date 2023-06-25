@@ -157,6 +157,9 @@ namespace GHPT.Utils
         {
             try
             {
+                if (string.IsNullOrEmpty(addition.Value))
+                    return false;
+
                 string[] pointValues = addition.Value.Replace("{", "").Replace("}", "").Split(',');
                 double[] pointDoubles = pointValues.Select(p => double.Parse(p)).ToArray();
 

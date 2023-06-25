@@ -35,6 +35,7 @@ namespace GHPT.Utils
                 WriteIndented = true,
                 IncludeFields = true,
                 NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
 
             if (chatGPTJson.ToLowerInvariant().Contains(Prompt.TOO_COMPLEX))
