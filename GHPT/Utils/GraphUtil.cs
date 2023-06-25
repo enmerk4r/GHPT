@@ -59,12 +59,8 @@ namespace GHPT.Utils
             IGH_Param fromParam = GetParam(componentFrom, pairing.From, false);
             IGH_Param toParam = GetParam(componentTo, pairing.To, true);
 
-            if (fromParam is null && toParam is not null)
+            if (fromParam is null || toParam is null)
             {
-                ResolveMissingParam(toParam, (componentTo as IGH_Component).Params.Output);
-                Grasshopper.Kernel.Types.IGH_Goo fromGoo = fromParam.VolatileData.AllData(true)?.First();
-                Grasshopper.Kernel.Types.IGH_Goo toGoo = toParam.VolatileData.AllData(true)?.First();
-
                 return;
             }
 
