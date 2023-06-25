@@ -69,16 +69,6 @@ namespace GHPT.Utils
             toParam.ComputeData();
         }
 
-        private static void ResolveMissingParam(IGH_Param notMissing, IEnumerable<IGH_Param> potentialParameters)
-        {
-            foreach (IGH_Param param in potentialParameters)
-            {
-                if (param.SourceCount != 0)
-                    continue;
-
-            }
-        }
-
         private static IGH_Param GetParam(IGH_DocumentObject docObj, Connection connection, bool isInput)
         {
             var resultParam = docObj switch
@@ -94,6 +84,9 @@ namespace GHPT.Utils
         private static IGH_Param GetComponentParam(IGH_Component component, Connection connection, bool isInput)
         {
             IList<IGH_Param> _params = (isInput ? component.Params.Input : component.Params.Output)?.ToArray();
+
+            if (_params?.Count()! > 0)
+                return null;
 
             if (_params.Count() <= 1)
                 return _params.First();
@@ -115,11 +108,6 @@ namespace GHPT.Utils
             }
 
             return null;
-        }
-
-        private static void ConnectParams(IGH_Param from, IGH_Param to)
-        {
-
         }
 
         private static IGH_ObjectProxy GetObject(string name)
