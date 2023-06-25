@@ -1,0 +1,18 @@
+---
+name: GHPT
+version: 0.1.0
+authors:
+- Callum Sykes
+- Jo Kam
+- Quoc Dang
+- Ryan Erbert
+- Sergey Pigach
+description: >
+  GHPT takes a prompt and uses ChatGPT to generate a Grasshopper Script.
+url: "https://github.com/enmerk4r/GHPT"
+keywords:
+- ChatGPT
+- GHPT
+- Grasshopper
+- Tutor
+icon: icon.png

@@ -105,10 +105,10 @@ namespace GHPT.Components
             if (_data.Additions is null)
                 return;
 
-            
+
 
             // Compute tiers
-            Dictionary<int, List<Addition>> buckets = new Dictionary<int, List<Addition>>();
+            Dictionary<int, List<Addition>> buckets = new();
 
             foreach (Addition addition in _data.Additions)
             {
@@ -136,7 +136,7 @@ namespace GHPT.Components
                 }
             }
 
-            
+
         }
 
         private void ConnectComponents()
@@ -249,7 +249,7 @@ namespace GHPT.Components
         /// You can add image files to your project resources and access them like this:
         /// return Resources.IconForThisComponent;
         /// </summary>
-        protected override System.Drawing.Bitmap Icon => null;
+        protected override System.Drawing.Bitmap Icon => Resources.Icons.dark_logo_24x24;
 
         /// <summary>
         /// Each component must have a unique Guid to identify it. 
