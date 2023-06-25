@@ -32,7 +32,7 @@
 >
 > You may feel like the only productive contribution is `code`. But that's not true! Any and all engagement helps the project, so give yourself a little pat on the back 😊!
 >
-> You can start by looking through [these](https://github.com/clicketyclackety/Crash/labels/Beginner%20issues) beginner and help-wanted issues:
+> You can start by looking through [these](https://github.com/enmerk4r/GHPT/labels/Beginner%20issues) beginner and help-wanted issues:
 > Beginner issues - issues which should only require a few lines of code, and a test or two.
 > Help wanted issues - issues which should be a bit more involved than beginner issues.
 > Both issue lists are sorted by total number of comments. While not perfect, number of comments is a reasonable proxy for impact a given change will have.
