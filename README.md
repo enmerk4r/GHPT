@@ -19,7 +19,10 @@ To use the OpenAI API, you need to provide an API key. First, sign up for OpenAI
 ![image](https://github.com/enmerk4r/GHPT/assets/114206649/66441be3-3c87-4de1-81ca-71a1565347ce)
 
 
+paste the key in ...
 
+go here... check for your access to models on GPT (currently we are using the more advanced model GPT-4 that requires a waitlist) but model GPT-3.5 should also works well.
+paste your model in this ...
 
 ## How to use
 prompt guide
