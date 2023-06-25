@@ -1,6 +1,5 @@
 using GHPT.Prompts;
 using GHPT.Utils;
-using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
 using System;
@@ -8,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace GHPT.Components
 {
@@ -18,7 +16,7 @@ namespace GHPT.Components
         private PromptData _data;
         private bool _spinning;
 
-        private Queue _queue;
+        private readonly Queue _queue;
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
         /// constructor without any arguments.
@@ -41,6 +39,7 @@ namespace GHPT.Components
             this.AddComponents();
             this.ConnectComponents();
             Grasshopper.Instances.RedrawCanvas();
+            Rhino.RhinoDoc.ActiveDoc.Views.Redraw();
         }
 
         /// <summary>
@@ -126,13 +125,13 @@ namespace GHPT.Components
                 this.CreatePromptPanel();
             }
             Grasshopper.Instances.RedrawCanvas();
-            
+
         }
 
         public void SetInitCode(string code)
         {
             this._queue.Enqueue(code);
-            GH_Panel panel = new GH_Panel();
+            GH_Panel panel = new();
             this.Params.Input[0].AddVolatileData(new Grasshopper.Kernel.Data.GH_Path(0), 0, code);
         }
 
@@ -140,7 +139,7 @@ namespace GHPT.Components
         {
             string code = (string)this._queue.Dequeue();
 
-            GH_Panel panel = new GH_Panel();
+            GH_Panel panel = new();
             panel.NickName = "GHPT Prompt";
 
             panel.UserText = code;
@@ -154,7 +153,7 @@ namespace GHPT.Components
 
         public void AdvanceSpinner()
         {
-            List<string> sequence = new List<string>()
+            List<string> sequence = new()
             {
                 "Thinking: \\", "Thinking: |", "Thinking: /", "Thinking: -"
             };
@@ -174,11 +173,12 @@ namespace GHPT.Components
 
                 this.Message = sequence[nextIndex];
             }
-            Grasshopper.Instances.ActiveCanvas.BeginInvoke(new Action(() => {
+            Grasshopper.Instances.ActiveCanvas.BeginInvoke(new Action(() =>
+            {
                 Grasshopper.Instances.RedrawCanvas();
             }));
-            
-            
+
+
         }
 
         public void RunSpinner()

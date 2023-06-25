@@ -1,4 +1,5 @@
 ﻿using GHPT.Prompts;
+using System;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -34,9 +35,18 @@ namespace GHPT.Utils
                 IncludeFields = true
             };
 
-            PromptData result = JsonSerializer.Deserialize<PromptData>(chatGPTJson, options);
+            try
+            {
+                PromptData result = JsonSerializer.Deserialize<PromptData>(chatGPTJson, options);
+                return result;
+            }
+            catch (Exception)
+            {
+                ;
 
-            return result;
+            }
+
+            return default;
         }
 
         public static async Task<PromptData> AskQuestion(string question)

@@ -1,6 +1,7 @@
 ﻿using GHPT.Prompts;
 using Grasshopper;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Special;
 using System;
 using System.Collections.Generic;
@@ -57,9 +58,15 @@ namespace GHPT.Utils
             IGH_Param toParam = GetParam(componentTo, pairing.To, true);
 
             if (fromParam is null || toParam is null)
-                return;
+            {
+                ;
 
-            toParam.AddSource(toParam);
+                return;
+            }
+
+            toParam.AddSource(fromParam);
+            toParam.CollectData();
+            toParam.ComputeData();
         }
 
         private static IGH_Param GetParam(IGH_DocumentObject docObj, Connection connection, bool isInput)
@@ -123,9 +130,32 @@ namespace GHPT.Utils
             {
                 GH_NumberSlider slider => SetNumberSliderData(addition, slider),
                 GH_Panel panel => SetPanelData(addition, panel),
+                Param_Point point => SetPointData(addition, point),
                 _ => false
             };
 
+        }
+
+        private static bool SetPointData(Addition addition, Param_Point point)
+        {
+            try
+            {
+                string[] pointValues = addition.Value.Replace("{", "").Replace("}", "").Split(',');
+                double[] pointDoubles = pointValues.Select(p => double.Parse(p)).ToArray();
+
+                point.SetPersistentData(new Rhino.Geometry.Point3d(pointDoubles[0], pointDoubles[1], pointDoubles[2]));
+            }
+            catch
+            {
+                point.SetPersistentData(new Rhino.Geometry.Point3d(0, 0, 0));
+            }
+            finally
+            {
+                point.CollectData();
+                point.ComputeData();
+            }
+
+            return true;
         }
 
         private static bool SetPanelData(Addition addition, GH_Panel panel)
