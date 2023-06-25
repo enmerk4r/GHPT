@@ -117,9 +117,6 @@ namespace GHPT.Components
             }
         }
 
-        public void SelfDestruct()
-        {
-            return;
 
         protected override void AfterSolveInstance()
         {
