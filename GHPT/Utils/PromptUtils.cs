@@ -54,6 +54,14 @@ namespace GHPT.Utils
             var payload = await ClientUtil.Ask(Prompt.GetPrompt(question));
             string payloadJson = payload.Choices.FirstOrDefault().Message.Content;
 
+            if (payloadJson.ToLowerInvariant().Contains(Prompt.TOO_COMPLEX.ToLowerInvariant()))
+            {
+                return new PromptData()
+                {
+                    Advice = Prompt.TOO_COMPLEX
+                };
+            }
+
             var returnValue = GetPromptDataFromResponse(GetChatGPTJson(payloadJson));
 
             return returnValue;
