@@ -40,6 +40,16 @@ Paste your model in the GPT model box.
 
 
 ## How to use
-prompt guide
+
+Creating a component and initiating a request to the ChatGPT API can be accomplished via shortcut; Prompts can be written directly into the grasshopper component search function.
+
+![write prompt](https://github.com/enmerk4r/GHPT/assets/42498952/675929fc-69c9-4576-bd21-5db935857435)
 
 
+To take advantage of this functionality, double click an empty space on the canvas and type a prompt in the following format:
+
+`GHPT = <your prompt goes here>`
+
+After allowing the module some time to think, an organized node graph will appear.
+
+In the event that a prompt is too complex, the module will display an error message.
