@@ -27,6 +27,7 @@ namespace GHPT.Components
         private void OnReady(object sender, EventArgs e)
         {
             this.AddComponents();
+            this.ConnectComponents();
             Grasshopper.Instances.RedrawCanvas();
         }
 
@@ -91,6 +92,14 @@ namespace GHPT.Components
                 x += 200;
             }
 
+        }
+
+        private void ConnectComponents()
+        {
+            foreach (ConnectionPairing connection in _data.Connections)
+            {
+                GraphUtil.ConnectComponent(_doc, connection);
+            }
         }
 
         public void SelfDestruct()
