@@ -6,11 +6,11 @@ It was developed at the AEC Tech Seattle Hackathon 2023 hosted by Thornton Tomas
 
 
 ## Team
-- Callum Sykes - StructureCraft
-- Jo Kam - Dimensional Innovations
-- Sergey Pigach - Thornton Tomasetti
-- Ryan Erbert
-- Quoc Dang
+- [Callum Sykes](https://github.com/clicketyclackety) - StructureCraft
+- [Jo Kamm](https://github.com/jkamm) - Dimensional Innovations
+- [Sergey Pigach](https://github.com/enmerk4r) - Thornton Tomasetti
+- [Ryan Erbert](https://github.com/RyanErbert)
+- [Quoc Dang](https://github.com/jackDang2803)
 
 ## Installation
 Your options for installing GHPT are as follows:
