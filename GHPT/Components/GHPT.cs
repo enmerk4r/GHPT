@@ -105,14 +105,38 @@ namespace GHPT.Components
             if (_data.Additions is null)
                 return;
 
-            float x = this.Attributes.Pivot.X + 200;
-            float y = this.Attributes.Pivot.Y;
+            
+
+            // Compute tiers
+            Dictionary<int, List<Addition>> buckets = new Dictionary<int, List<Addition>>();
 
             foreach (Addition addition in _data.Additions)
             {
-                GraphUtil.InstantiateComponent(_doc, addition, new System.Drawing.PointF(x, y));
-                x += 200;
+                if (buckets.ContainsKey(addition.Tier))
+                {
+                    buckets[addition.Tier].Add(addition);
+                }
+                else
+                {
+                    buckets.Add(addition.Tier, new List<Addition>() { addition });
+                }
             }
+
+            foreach (int tier in buckets.Keys)
+            {
+                int xIncrement = 250;
+                int yIncrement = 100;
+                float x = this.Attributes.Pivot.X + 100 + (xIncrement * tier);
+                float y = this.Attributes.Pivot.Y;
+
+                foreach (Addition addition in buckets[tier])
+                {
+                    GraphUtil.InstantiateComponent(_doc, addition, new System.Drawing.PointF(x, y));
+                    y += yIncrement;
+                }
+            }
+
+            
         }
 
         private void ConnectComponents()
