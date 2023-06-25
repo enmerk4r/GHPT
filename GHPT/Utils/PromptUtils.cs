@@ -33,7 +33,8 @@ namespace GHPT.Utils
                 IgnoreReadOnlyProperties = true,
                 ReadCommentHandling = JsonCommentHandling.Skip,
                 WriteIndented = true,
-                IncludeFields = true
+                IncludeFields = true,
+                NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
             };
 
             if (chatGPTJson.ToLowerInvariant().Contains(Prompt.TOO_COMPLEX))
