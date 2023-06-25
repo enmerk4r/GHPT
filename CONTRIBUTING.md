@@ -22,9 +22,9 @@
 
 # Your First Contribution
 
-> Unsure where to begin contributing to Crash? There's a lot of ways you can help.
+> Unsure where to begin contributing to GHPT? There's a lot of ways you can help.
 >
-> 1. Read through the bugs in [issues](https://github.com/clicketyclackety/Crash/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) and help someone out
+> 1. Read through the bugs in [issues](https://github.com/enmerk4r/GHPT/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) and help someone out
 > 2. Read through the discussions and join in the discourse
 > 3. Create new ideas and topics in the discourse
 > 4. Ask Questions in the Q&A! Questions are very helpful
@@ -32,7 +32,7 @@
 >
 > You may feel like the only productive contribution is `code`. But that's not true! Any and all engagement helps the project, so give yourself a little pat on the back 😊!
 >
-> You can start by looking through [these](https://github.com/clicketyclackety/Crash/labels/Beginner%20issues) beginner and help-wanted issues:
+> You can start by looking through [these](https://github.com/enmerk4r/GHPT/labels/Beginner%20issues) beginner and help-wanted issues:
 > Beginner issues - issues which should only require a few lines of code, and a test or two.
 > Help wanted issues - issues which should be a bit more involved than beginner issues.
 > Both issue lists are sorted by total number of comments. While not perfect, number of comments is a reasonable proxy for impact a given change will have.

@@ -1,20 +1,16 @@
 # GHPT
+This project sets out to find a way to leverage the power of ChatGPT to create Grasshopper definitions.
+It was developed at the AEC Tech Seattle Hackathon 2023 hosted by Thornton Tomasetti CORE studio and LMN
 
-<div align="center">
-  <a href="https://github.com/enmerk4r/GHPT">
-    <img src="art\dark_logo_64x64.png" alt="Logo">
-  </a>
-</div>
+![GHPT-logo-animation-medium](https://github.com/enmerk4r/GHPT/assets/25551621/f6959c8c-979c-476c-8d90-6f6362561693)
 
-this project sets out to find way to leverage the power of ChatGPT to create Grasshopper definitions
-it was developed at the AEC Tech Seattle Hackathon 2023 hosted by Thornton Tomasetti CORE studio and LMN
 
 ## Team
-Callum Sykes - StructureCraft
-Jo Kam - Dimensional Innovations
-Sergey Pigach - Thornton Tomasetti
-Ryan Erbert
-Quoc Dang
+- Callum Sykes - StructureCraft
+- Jo Kam - Dimensional Innovations
+- Sergey Pigach - Thornton Tomasetti
+- Ryan Erbert
+- Quoc Dang
 
 ## Installation
 
@@ -41,4 +37,5 @@ Paste your model in GPT model box.
 
 ## How to use
 prompt guide
+
 
