@@ -66,20 +66,31 @@ namespace GHPT.Utils
 
         public static async Task<PromptData> AskQuestion(string question)
         {
-            var payload = await ClientUtil.Ask(Prompt.GetPrompt(question));
-            string payloadJson = payload.Choices.FirstOrDefault().Message.Content;
+            try
+            {
+                string prompt = Prompt.GetPrompt(question);
+                var payload = await ClientUtil.Ask(prompt);
+                string payloadJson = payload.Choices.FirstOrDefault().Message.Content;
 
-            if (payloadJson.ToLowerInvariant().Contains(Prompt.TOO_COMPLEX.ToLowerInvariant()))
+                if (payloadJson.ToLowerInvariant().Contains(Prompt.TOO_COMPLEX.ToLowerInvariant()))
+                {
+                    return new PromptData()
+                    {
+                        Advice = Prompt.TOO_COMPLEX
+                    };
+                }
+
+                var returnValue = GetPromptDataFromResponse(GetChatGPTJson(payloadJson));
+
+                return returnValue;
+            }
+            catch (Exception ex)
             {
                 return new PromptData()
                 {
-                    Advice = Prompt.TOO_COMPLEX
+                    Advice = ex.Message
                 };
             }
-
-            var returnValue = GetPromptDataFromResponse(GetChatGPTJson(payloadJson));
-
-            return returnValue;
         }
 
     }

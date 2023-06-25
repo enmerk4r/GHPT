@@ -16,7 +16,7 @@ namespace GHPT.Components
         private PromptData _data;
         private bool _spinning;
 
-        private readonly string previousPrompt = string.Empty;
+        private string previousPrompt = string.Empty;
 
         private readonly Queue _queue;
         /// <summary>
@@ -95,7 +95,7 @@ namespace GHPT.Components
 
             if (prompt == previousPrompt)
                 return;
-            prompt = previousPrompt;
+            previousPrompt = prompt;
 
             this._spinning = true;
             Task.Run(() =>
