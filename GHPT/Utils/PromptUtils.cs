@@ -50,6 +50,7 @@ namespace GHPT.Utils
             try
             {
                 PromptData result = JsonSerializer.Deserialize<PromptData>(chatGPTJson, options);
+                result.ComputeTiers();
                 return result;
             }
             catch (Exception ex)
