@@ -116,16 +116,25 @@ namespace GHPT.Utils
             double[] resultWeights = new double[] { 0 };
             Instances.ComponentServer.FindObjects(new string[] { name }, 10, ref results, ref resultWeights);
 
-            IGH_ObjectProxy myProxy = results.First(ghpo => ghpo.Kind == GH_ObjectType.CompiledObject);
-            if (myProxy is null)
-            {
-                if (fuzzyPairs.ContainsKey(name))
-                {
-                    name = fuzzyPairs[name];
-                }
+            var myProxies = results.Where(ghpo => ghpo.Kind == GH_ObjectType.CompiledObject);
 
-                myProxy = Instances.ComponentServer.FindObjectByName(name, true, true);
+            var _components = myProxies.OfType<IGH_Component>();
+            var _params = myProxies.OfType<IGH_Param>();
+
+            // Prefer Components to Params
+            var myProxy = myProxies.First();
+            if (_components is not null)
+                myProxy = _components.FirstOrDefault() as IGH_ObjectProxy;
+            else if (myProxy is not null)
+                myProxy = _params.FirstOrDefault() as IGH_ObjectProxy;
+
+            // Sort weird names
+            if (fuzzyPairs.ContainsKey(name))
+            {
+                name = fuzzyPairs[name];
             }
+
+            myProxy = Instances.ComponentServer.FindObjectByName(name, true, true);
 
             return myProxy;
         }
