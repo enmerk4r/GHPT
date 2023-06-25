@@ -30,8 +30,6 @@ namespace GHPT.Prompts
                 }
             }
 
-            ;
-
             return prompt_string.Replace(QUESTION_FORMAT, question)
                                 .Replace(TOO_COMPLEX_FORMAT, TOO_COMPLEX);
         }
