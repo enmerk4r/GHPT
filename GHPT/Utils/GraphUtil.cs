@@ -1,4 +1,6 @@
-﻿using GHPT.Prompts;
+﻿using FuzzySharp;
+using FuzzySharp.Extractor;
+using GHPT.Prompts;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
@@ -57,9 +59,11 @@ namespace GHPT.Utils
             IGH_Param fromParam = GetParam(componentFrom, pairing.From, false);
             IGH_Param toParam = GetParam(componentTo, pairing.To, true);
 
-            if (fromParam is null || toParam is null)
+            if (fromParam is null && toParam is not null)
             {
-                ;
+                ResolveMissingParam(toParam, (componentTo as IGH_Component).Params.Output);
+                Grasshopper.Kernel.Types.IGH_Goo fromGoo = fromParam.VolatileData.AllData(true)?.First();
+                Grasshopper.Kernel.Types.IGH_Goo toGoo = toParam.VolatileData.AllData(true)?.First();
 
                 return;
             }
@@ -67,6 +71,16 @@ namespace GHPT.Utils
             toParam.AddSource(fromParam);
             toParam.CollectData();
             toParam.ComputeData();
+        }
+
+        private static void ResolveMissingParam(IGH_Param notMissing, IEnumerable<IGH_Param> potentialParameters)
+        {
+            foreach (IGH_Param param in potentialParameters)
+            {
+                if (param.SourceCount != 0)
+                    continue;
+
+            }
         }
 
         private static IGH_Param GetParam(IGH_DocumentObject docObj, Connection connection, bool isInput)
@@ -83,9 +97,9 @@ namespace GHPT.Utils
 
         private static IGH_Param GetComponentParam(IGH_Component component, Connection connection, bool isInput)
         {
-            IEnumerable<IGH_Param> _params = isInput ? component.Params.Input : component.Params.Output;
+            IList<IGH_Param> _params = (isInput ? component.Params.Input : component.Params.Output)?.ToArray();
 
-            if (_params.Count() == 0)
+            if (_params.Count() <= 1)
                 return _params.First();
 
             // Linq Alternative to below
@@ -96,6 +110,12 @@ namespace GHPT.Utils
                 {
                     return _param;
                 }
+            }
+
+            ExtractedResult<string> fuzzyResult = Process.ExtractOne(connection.ParameterName, _params.Select(_p => _p.Name));
+            if (fuzzyResult.Score >= 50)
+            {
+                return _params[fuzzyResult.Index];
             }
 
             return null;
