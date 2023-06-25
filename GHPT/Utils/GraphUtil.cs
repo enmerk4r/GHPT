@@ -85,7 +85,7 @@ namespace GHPT.Utils
         {
             IList<IGH_Param> _params = (isInput ? component.Params.Input : component.Params.Output)?.ToArray();
 
-            if (_params?.Count()! > 0)
+            if (_params is null || _params.Count == 0)
                 return null;
 
             if (_params.Count() <= 1)
@@ -112,7 +112,11 @@ namespace GHPT.Utils
 
         private static IGH_ObjectProxy GetObject(string name)
         {
-            IGH_ObjectProxy myProxy = Instances.ComponentServer.FindObjectByName(name, true, true);
+            IGH_ObjectProxy[] results = Array.Empty<IGH_ObjectProxy>();
+            double[] resultWeights = new double[] { 0 };
+            Instances.ComponentServer.FindObjects(new string[] { name }, 10, ref results, ref resultWeights);
+
+            IGH_ObjectProxy myProxy = results.First(ghpo => ghpo.Kind == GH_ObjectType.CompiledObject);
             if (myProxy is null)
             {
                 if (fuzzyPairs.ContainsKey(name))
