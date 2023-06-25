@@ -22,9 +22,9 @@
 
 # Your First Contribution
 
-> Unsure where to begin contributing to Crash? There's a lot of ways you can help.
+> Unsure where to begin contributing to GHPT? There's a lot of ways you can help.
 >
-> 1. Read through the bugs in [issues](https://github.com/clicketyclackety/Crash/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) and help someone out
+> 1. Read through the bugs in [issues](https://github.com/enmerk4r/GHPT/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) and help someone out
 > 2. Read through the discussions and join in the discourse
 > 3. Create new ideas and topics in the discourse
 > 4. Ask Questions in the Q&A! Questions are very helpful
