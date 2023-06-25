@@ -1,5 +1,6 @@
 ﻿using GHPT.Prompts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -42,11 +43,13 @@ namespace GHPT.Utils
             }
             catch (Exception)
             {
-                ;
-
+                return new PromptData()
+                {
+                    Additions = new List<Addition>(),
+                    Connections = new List<ConnectionPairing>(),
+                    Advice = Prompt.TOO_COMPLEX
+                };
             }
-
-            return default;
         }
 
         public static async Task<PromptData> AskQuestion(string question)
