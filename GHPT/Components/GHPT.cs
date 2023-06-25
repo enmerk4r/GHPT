@@ -98,6 +98,10 @@ namespace GHPT.Components
 
         public void AddComponents()
         {
+
+            if (!string.IsNullOrEmpty(_data.Advice))
+                this.CreateAdvicePanel(_data.Advice);
+
             if (_data.Additions is null)
                 return;
 
@@ -109,8 +113,6 @@ namespace GHPT.Components
                 GraphUtil.InstantiateComponent(_doc, addition, new System.Drawing.PointF(x, y));
                 x += 200;
             }
-
-            this.CreateAdvicePanel(_data.Advice);
         }
 
         private void ConnectComponents()
