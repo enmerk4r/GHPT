@@ -59,7 +59,7 @@ namespace GHPT.Utils
                 {
                     Additions = new List<Addition>(),
                     Connections = new List<ConnectionPairing>(),
-                    Advice = ex.Message
+                    Advice = "Exception: " + ex.Message
                 };
             }
         }

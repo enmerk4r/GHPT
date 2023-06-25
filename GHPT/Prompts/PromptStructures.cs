@@ -17,7 +17,7 @@ namespace GHPT.Prompts
             for (int i=0; i < additions.Count(); i++)
             {
                 Addition addition = additions[i];
-                int tier = FindParentsRecursive(addition, new List<Addition>());
+                int tier = FindParentsRecursive(addition);
                 addition.Tier = tier;
 
                 additions[i] = addition;
@@ -25,16 +25,25 @@ namespace GHPT.Prompts
             this.Additions = additions;
         }
 
-        public int FindParentsRecursive(Addition child, List<Addition> ancestors)
+        public int FindParentsRecursive(Addition child, int depth=0)
         {
-            ConnectionPairing pairing = Connections.FirstOrDefault(c => c.To.Id == child.Id);
-            if (pairing.IsValid())
+            List<ConnectionPairing> pairings = Connections.Where(c => c.To.Id == child.Id).ToList();
+            List<int> depths = new List<int>();
+            foreach (ConnectionPairing pairing in pairings)
             {
-                Addition parent = Additions.FirstOrDefault(a => pairing.From.Id == a.Id);
-                ancestors.Add(parent);
-                FindParentsRecursive(parent, ancestors);
+                if (pairing.IsValid())
+                {
+                    Addition parent = Additions.FirstOrDefault(a => pairing.From.Id == a.Id);
+                    int maxDepth = FindParentsRecursive(parent, depth + 1);
+                    depths.Add(maxDepth);
+                }
             }
-            return ancestors.Count();
+
+            if (depths.Count == 0 ) return depth;
+            else if (depths.Count == 1) return depths[0];
+            else return depths.Max();
+
+            
         }
     }
 
