@@ -98,6 +98,9 @@ namespace GHPT.Components
 
         public void AddComponents()
         {
+            if (_data.Additions is null)
+                return;
+
             float x = this.Attributes.Pivot.X + 200;
             float y = this.Attributes.Pivot.Y;
 
@@ -112,6 +115,9 @@ namespace GHPT.Components
 
         private void ConnectComponents()
         {
+            if (_data.Connections is null)
+                return;
+
             foreach (ConnectionPairing connection in _data.Connections)
             {
                 GraphUtil.ConnectComponent(_doc, connection);
@@ -159,7 +165,7 @@ namespace GHPT.Components
 
         public void CreatePanel(string content, string nickName, System.Drawing.PointF pivot, System.Drawing.Color color)
         {
-            GH_Panel panel = new GH_Panel();
+            GH_Panel panel = new();
             panel.NickName = nickName;
 
             panel.UserText = content;

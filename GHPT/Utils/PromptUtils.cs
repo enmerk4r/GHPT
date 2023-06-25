@@ -36,18 +36,28 @@ namespace GHPT.Utils
                 IncludeFields = true
             };
 
-            try
-            {
-                PromptData result = JsonSerializer.Deserialize<PromptData>(chatGPTJson, options);
-                return result;
-            }
-            catch (Exception)
+            if (chatGPTJson.ToLowerInvariant().Contains(Prompt.TOO_COMPLEX))
             {
                 return new PromptData()
                 {
                     Additions = new List<Addition>(),
                     Connections = new List<ConnectionPairing>(),
                     Advice = Prompt.TOO_COMPLEX
+                };
+            }
+
+            try
+            {
+                PromptData result = JsonSerializer.Deserialize<PromptData>(chatGPTJson, options);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new PromptData()
+                {
+                    Additions = new List<Addition>(),
+                    Connections = new List<ConnectionPairing>(),
+                    Advice = ex.Message
                 };
             }
         }
