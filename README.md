@@ -15,6 +15,7 @@ Quoc Dang
 Once GhPT is downloaded and installed, OpenAI token key needs to be setted up through the pop-up Token Configuration Window. To use the OpenAI API, you need to provide an API key, and specify a GPT model.
 ![GHPT-Configuration](https://github.com/enmerk4r/GHPT/assets/114206649/39b36d31-ba99-49c1-8ede-27b7b2ebf0b6)
 
+
 You can sign up for OpenAI API on [this page](https://openai.com/product). Once you signed up and logged in, open [this page](https://platform.openai.com/account/api-keys) and select Create new secret key. You can then copy the key by clicking on the green text Copy, make sure to save this key somewhere else as you will not be able to access it again.
 ![image](https://github.com/enmerk4r/GHPT/assets/114206649/66441be3-3c87-4de1-81ca-71a1565347ce)
 
