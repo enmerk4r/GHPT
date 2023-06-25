@@ -13,9 +13,13 @@ It was developed at the AEC Tech Seattle Hackathon 2023 hosted by Thornton Tomas
 - Quoc Dang
 
 ## Installation
+Your options for installing GHPT are as follows:
+- Install the plug-in from [Food4Rhino](https://www.food4rhino.com/en/app/ghpt).
+- Install the GHPT Yak package from Rhino's Package Manager.
+- Build from source.
 
 ## Token Configuration
-Once GhPT is downloaded and installed, OpenAI token key needs to be setted up through the pop-up Token Configuration Window. To use the OpenAI API, you need to provide an API key, and specify a GPT model.
+Once GhPT is downloaded and installed, the OpenAI token key needs to be set up through the pop-up Token Configuration Window. To use the OpenAI API, you need to provide an API key and specify a GPT model.
 ![GHPT-Configuration](https://github.com/enmerk4r/GHPT/assets/114206649/39b36d31-ba99-49c1-8ede-27b7b2ebf0b6)
 
 
@@ -27,11 +31,11 @@ Paste the key in the GPT Token box.
 ![GHPT-Configuration 00_00_13_24 Still003](https://github.com/enmerk4r/GHPT/assets/114206649/88b0864e-346c-4891-8ab8-24461db66d12)
 
 
-Go to [this page](https://platform.openai.com/account/rate-limits) to check for your access to different GPT models (currently we are using the more advanced model GPT-4 that have limited access) but model GPT-3.5 should also works well.
+Go to [this page](https://platform.openai.com/account/rate-limits) to check for your access to different GPT models (currently we are using the more advanced model GPT-4 that has limited access) but model GPT-3.5 should also work well.
 ![gpt model](https://github.com/enmerk4r/GHPT/assets/114206649/fd61e092-9a65-484b-b394-93e22a1263cf)
 
 
-Paste your model in GPT model box.
+Paste your model in the GPT model box.
 ![GHPT-Configuration 00_00_16_10 Still004](https://github.com/enmerk4r/GHPT/assets/114206649/942d251c-6fa7-4433-9990-8fd4f9eba4be)
 
 
