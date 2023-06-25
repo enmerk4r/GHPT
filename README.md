@@ -1,4 +1,11 @@
 # GHPT
+
+<div align="center">
+  <a href="https://github.com/enmerk4r/GHPT">
+    <img src="art\dark_logo_64x64.png" alt="Logo">
+  </a>
+</div>
+
 this project sets out to find way to leverage the power of ChatGPT to create Grasshopper definitions
 it was developed at the AEC Tech Seattle Hackathon 2023 hosted by Thornton Tomasetti CORE studio and LMN
 
@@ -34,5 +41,4 @@ Paste your model in GPT model box.
 
 ## How to use
 prompt guide
-
 

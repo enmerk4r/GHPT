@@ -16,6 +16,8 @@ namespace GHPT.Components
         private PromptData _data;
         private bool _spinning;
 
+        private readonly string previousPrompt = string.Empty;
+
         private readonly Queue _queue;
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
@@ -40,6 +42,8 @@ namespace GHPT.Components
             this.ConnectComponents();
             Grasshopper.Instances.RedrawCanvas();
             Rhino.RhinoDoc.ActiveDoc.Views.Redraw();
+
+            _doc.NewSolution(true, GH_SolutionMode.Silent);
         }
 
         /// <summary>
@@ -85,6 +89,14 @@ namespace GHPT.Components
 
             DA.GetData(0, ref prompt);
             DA.GetData(1, ref temperature);
+
+            if (string.IsNullOrEmpty(prompt))
+                return;
+
+            if (prompt == previousPrompt)
+                return;
+            prompt = previousPrompt;
+
             this._spinning = true;
             Task.Run(() =>
             {

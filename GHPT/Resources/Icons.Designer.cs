@@ -73,9 +73,29 @@ namespace GHPT.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dark_logo_full_24x24 {
+            get {
+                object obj = ResourceManager.GetObject("dark_logo_full_24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap light_logo_24x24 {
             get {
                 object obj = ResourceManager.GetObject("light_logo_24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap light_logo_full_24x24 {
+            get {
+                object obj = ResourceManager.GetObject("light_logo_full_24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
