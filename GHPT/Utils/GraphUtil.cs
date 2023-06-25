@@ -1,5 +1,7 @@
-﻿using Grasshopper;
+﻿using GHPT.Prompts;
+using Grasshopper;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Special;
 using System;
 using System.Collections.Generic;
 
@@ -11,21 +13,26 @@ namespace GHPT.Utils
         private static readonly Dictionary<string, string> fuzzyPairs = new()
         {
             { "Extrusion", "Extrude" },
+            { "Text Panel", "Panel" }
         };
 
 
-        public static void InstantiateComponent(GH_Document doc, string name, System.Drawing.PointF pivot)
+        public static void InstantiateComponent(GH_Document doc, Addition addition, System.Drawing.PointF pivot)
         {
             try
             {
+                string name = addition.Name;
                 IGH_ObjectProxy myProxy = GetObject(name);
+                if (myProxy is null)
+                    return;
 
                 Guid myId = myProxy.Guid;
-                GH_Component myComponent = (GH_Component)Instances.ComponentServer.EmitObject(myId);
-                myComponent.Attributes.Pivot = pivot;
+                var emit = Instances.ComponentServer.EmitObject(myId);
+                ;
 
-
-                doc.AddObject(myComponent, false);
+                doc.AddObject(emit, false);
+                emit.Attributes.Pivot = pivot;
+                SetValue(addition, emit);
             }
             catch
             {
@@ -39,11 +46,40 @@ namespace GHPT.Utils
             {
                 if (fuzzyPairs.ContainsKey(name))
                 {
-                    myProxy = Instances.ComponentServer.FindObjectByName(fuzzyPairs[name], true, true);
+                    name = fuzzyPairs[name];
                 }
+
+                myProxy = Instances.ComponentServer.FindObjectByName(name, true, true);
             }
 
             return myProxy;
+        }
+
+        private static void SetValue(Addition addition, IGH_DocumentObject ghProxy)
+        {
+            string lowerCaseName = addition.Name.ToLowerInvariant();
+
+            bool result = ghProxy switch
+            {
+                GH_NumberSlider slider => SetNumberSliderData(addition, slider),
+                GH_Panel panel => SetPanelData(addition, panel),
+                _ => false
+            };
+
+        }
+
+        private static bool SetPanelData(Addition addition, GH_Panel panel)
+        {
+            panel.SetUserText(addition.Value);
+            return true;
+        }
+
+        private static bool SetNumberSliderData(Addition addition, GH_NumberSlider slider)
+        {
+            string value = addition.Value;
+            slider.SetInitCode(value);
+
+            return true;
         }
 
     }

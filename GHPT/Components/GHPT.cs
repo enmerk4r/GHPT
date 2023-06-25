@@ -87,7 +87,7 @@ namespace GHPT.Components
 
             foreach (Addition addition in _data.Additions)
             {
-                GraphUtil.InstantiateComponent(_doc, addition.Name, new System.Drawing.PointF(x, y));
+                GraphUtil.InstantiateComponent(_doc, addition, new System.Drawing.PointF(x, y));
                 x += 200;
             }
 
