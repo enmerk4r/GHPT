@@ -97,6 +97,12 @@ namespace GHPT.Components
                 return;
             previousPrompt = prompt;
 
+            if (this._spinning)
+            {
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Please don't interrupt me when I'm thinking");
+                return;
+            }
+
             this._spinning = true;
             Task.Run(() =>
             {
