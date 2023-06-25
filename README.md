@@ -56,6 +56,7 @@ In the event that a prompt is too complex, the module will display an error mess
 
 
 Prompt guide - add these text snippet at the end of your request for more specific instructions to GPT
-"if there are questions, put them in the Advice section" -> if your prompt is too complex for GPT, this allow GPT to ask for clarification
-"prefer Circle over Circle CNR" -> instruct GPT to prefer a component over another one with similar name/function
-"be specific" -> 
+
+* "if there are questions, put them in the Advice section" -> if your prompt is too complex for GPT, this allow GPT to ask for clarification
+* "prefer Circle over Circle CNR" -> instruct GPT to prefer a component over another one with similar name/function
+* "be specific" -> more clarified
