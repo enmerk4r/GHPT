@@ -23,7 +23,7 @@ namespace GHPT.Utils
             var response = await client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
 
             int statusCode = (int)response.StatusCode;
-            if (statusCode < 200 || statusCode >= 200)
+            if (statusCode < 200 || statusCode >= 300)
                 throw new System.Exception($"Error: {response.StatusCode} {response.ReasonPhrase} {await response.Content.ReadAsStringAsync()}");
 
             var result = await response.Content.ReadAsStringAsync();
