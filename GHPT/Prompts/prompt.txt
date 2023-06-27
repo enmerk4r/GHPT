@@ -15,49 +15,6 @@ Always use the given format, avoid any devitation.
 		{
 			"Name": "Number Slider",
 			"Id" : 1, // This number must be unique
-		},
-		{
-			"Name": "Number Slider",
-			"Id" : 2,
-		},
-		{
-			"Name": "Addition",
-			"Id" : 3,
-		}
-	],
-	"Connectionsions" : [
-		{
-			"To": { // Addition
-				"Id": 3,
-				"ParameterName": "A"
-			},
-			"From": { // Number Slider,
-				"Id": 1,
-				"ParameterName": "number"
-			}
-		},
-		 {
-			"To": { // Addition
-				"Id": 3,
-				"ParameterName": "B"
-			}
-			"From": { // Number Slider,
-				"Id": 2,
-				"ParameterName": "number"
-			}
-		}
-	]
-}
-
-// Question : How do I add two numbers inside of Grasshopper?
-// Reasoning: To add two numbers we need to Add. There is an Addition component that performs this function. We need to create two numbers the user can edit, we can use the Number Slider for both numbers. And then we can Connections all of the components together
-// JSON: 
-{
-	"Advice": "Make sure to set the number sliders to the correct value",
-	"Additions": [
-		{
-			"Name": "Number Slider",
-			"Id" : 1, // This number must be unique
 			"value": 0..25..100, // This is optional
 		},
 		{
@@ -296,5 +253,4 @@ Always use the given format, avoid any devitation.
 
 // Question: {QUESTION}
 // Reasoning: 
-// Advice: 
 // JSON:
