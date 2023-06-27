@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GHPT.IO
 {
@@ -23,14 +18,14 @@ namespace GHPT.IO
 
         }
 
-        public AskPayload(string model, List<Message> messages, double temperature=0.7)
+        public AskPayload(string model, List<Message> messages, double temperature = 0.7)
         {
             this.Model = model;
             this.Messages = messages;
             this.Temperature = temperature;
         }
 
-        public AskPayload(string model, Message msg, double temperature=0.7)
+        public AskPayload(string model, Message msg, double temperature = 0.7)
         {
             this.Model = model;
             this.Messages = new List<Message> { msg };

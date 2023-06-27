@@ -19,11 +19,7 @@ namespace GHPT.UI
             {
                 GH_PaletteStyle style = GH_Skin.palette_hidden_standard;
 
-                Color GreenGPT = Color.FromArgb(25, 195, 125);
-                Color PurpleGPT = Color.FromArgb(171, 104, 255);
-                Color BackgroundGPT = Color.FromArgb(64, 65, 79);
-                Color BorderGPT = Color.FromArgb(32, 33, 35);
-                GH_Skin.palette_hidden_standard = new GH_PaletteStyle(BackgroundGPT, BorderGPT, Color.White);
+                GH_Skin.palette_hidden_standard = new GH_PaletteStyle(Colours.Background, Colours.Border, Colours.Text);
 
                 base.Render(canvas, graphics, channel);
 
