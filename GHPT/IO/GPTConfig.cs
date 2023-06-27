@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace GHPT.IO
 {
@@ -17,7 +12,7 @@ namespace GHPT.IO
 
         public GPTConfig() { }
 
-        public GPTConfig(string token, string model) 
+        public GPTConfig(string token, string model)
         {
             this.Token = token;
             this.Model = model;

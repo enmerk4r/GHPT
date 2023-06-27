@@ -3,10 +3,7 @@ using GHPT.UI;
 using GHPT.Utils;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -38,6 +35,7 @@ namespace GHPT.Components
             Ready += OnReady;
             _queue = new Queue();
             _version = GPTVersion.GPT4;
+            this.Message = _version.ToString().Replace('_', '.');
         }
 
         public override void CreateAttributes()
@@ -60,6 +58,8 @@ namespace GHPT.Components
                     _version = version;
                     DestroyIconCache();
                     SetIconOverride(Icon);
+                    this.Message = _version.ToString().Replace('_', '.');
+                    Grasshopper.Instances.RedrawCanvas();
 
                 }, true, version == _version);
             }
@@ -201,7 +201,6 @@ namespace GHPT.Components
             }
         }
 
-
         protected override void AfterSolveInstance()
         {
             base.AfterSolveInstance();
@@ -291,7 +290,7 @@ namespace GHPT.Components
                 this.AdvanceSpinner();
                 Thread.Sleep(200);
             }
-            this.Message = null;
+            this.Message = _version.ToString().Replace('_', '.');
         }
 
         /// <summary>
@@ -300,22 +299,12 @@ namespace GHPT.Components
         /// You can add image files to your project resources and access them like this:
         /// return Resources.IconForThisComponent;
         /// </summary>
-        protected override System.Drawing.Bitmap Icon
+        protected override System.Drawing.Bitmap Icon => _version switch
         {
-            get
-            {
-                if (_version == GPTVersion.GPT3_5)
-                {
-                    return Resources.Icons.light_logo_gpt3_5_24x24;
-                }
-                else if (_version == GPTVersion.GPT4)
-                {
-                    return Resources.Icons.light_logo_gpt4_24x24;
-                }
-
-                return Resources.Icons.light_logo_24x24;
-            }
-        }
+            GPTVersion.GPT3_5 => Resources.Icons.light_logo_gpt3_5_24x24,
+            GPTVersion.GPT4 => Resources.Icons.light_logo_gpt4_24x24,
+            _ => Resources.Icons.light_logo_24x24,
+        };
 
         /// <summary>
         /// Each component must have a unique Guid to identify it. 
