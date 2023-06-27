@@ -1,4 +1,4 @@
-using GHPT.Prompts;
+using GHPT.Serialization;
 using GHPT.Utils;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
@@ -38,8 +38,7 @@ namespace GHPT.Components
         private void OnReady(object sender, EventArgs e)
         {
             this._spinning = false;
-            this.AddComponents();
-            this.ConnectComponents();
+            this.MoveComponents();
             Grasshopper.Instances.RedrawCanvas();
             Rhino.RhinoDoc.ActiveDoc.Views.Redraw();
 
@@ -111,22 +110,23 @@ namespace GHPT.Components
             {
                 this.RunSpinner();
             });
+
             _data = await PromptUtils.AskQuestion(prompt);
+            var serializer = new Serializer(_doc);
+            serializer.Deserialize(_data);
+
             Ready?.Invoke(this, new EventArgs());
         }
 
         public event EventHandler Ready;
 
-        public void AddComponents()
+        public void MoveComponents()
         {
-
             if (!string.IsNullOrEmpty(_data.Advice))
                 this.CreateAdvicePanel(_data.Advice);
 
             if (_data.Additions is null)
                 return;
-
-
 
             // Compute tiers
             Dictionary<int, List<Addition>> buckets = new();
@@ -152,25 +152,13 @@ namespace GHPT.Components
 
                 foreach (Addition addition in buckets[tier])
                 {
-                    GraphUtil.InstantiateComponent(_doc, addition, new System.Drawing.PointF(x, y));
+                    // Move components
+                    // GraphUtil.InstantiateComponent(_doc, addition, new System.Drawing.PointF(x, y));
                     y += yIncrement;
                 }
-            }
 
-
-        }
-
-        private void ConnectComponents()
-        {
-            if (_data.Connections is null)
-                return;
-
-            foreach (ConnectionPairing connection in _data.Connections)
-            {
-                GraphUtil.ConnectComponent(_doc, connection);
             }
         }
-
 
         protected override void AfterSolveInstance()
         {
