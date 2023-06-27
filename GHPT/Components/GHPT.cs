@@ -1,4 +1,4 @@
-using GHPT.Prompts;
+using GHPT.Serialization;
 using GHPT.Utils;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
@@ -72,6 +72,8 @@ namespace GHPT.Components
         protected async override void SolveInstance(IGH_DataAccess DA)
         {
             _doc = OnPingDocument();
+
+            Serializer.Serialize(_doc);
 
             bool configured = ConfigUtil.CheckConfiguration();
 

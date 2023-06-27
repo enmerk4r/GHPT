@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace GHPT.Prompts
+namespace GHPT.Serialization
 {
 
     public struct PromptData
@@ -12,7 +12,7 @@ namespace GHPT.Prompts
 
         public void ComputeTiers()
         {
-            List<Addition> additions = this.Additions.ToList();
+            List<Addition> additions = Additions.ToList();
             if (additions == null)
                 return;
 
@@ -24,7 +24,7 @@ namespace GHPT.Prompts
 
                 additions[i] = addition;
             }
-            this.Additions = additions;
+            Additions = additions;
         }
 
         public int FindParentsRecursive(Addition child, int depth = 0)
