@@ -1,12 +1,15 @@
 using GHPT.Prompts;
+using GHPT.UI;
 using GHPT.Utils;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GHPT.Components
 {
@@ -15,6 +18,7 @@ namespace GHPT.Components
         private GH_Document _doc;
         private PromptData _data;
         private bool _spinning;
+        private GPTVersion _version;
 
         private string previousPrompt = string.Empty;
 
@@ -33,6 +37,32 @@ namespace GHPT.Components
         {
             Ready += OnReady;
             _queue = new Queue();
+            _version = GPTVersion.GPT4;
+        }
+
+        public override void CreateAttributes()
+        {
+            m_attributes = new CustomAttributes(this);
+        }
+
+        public override void AppendAdditionalMenuItems(ToolStripDropDown menu)
+        {
+            base.AppendAdditionalMenuItems(menu);
+
+            Menu_AppendSeparator(menu);
+
+            var gptVersions = Enum.GetValues(typeof(GPTVersion)).Cast<GPTVersion>().ToList();
+            gptVersions.Remove(GPTVersion.None);
+            foreach (GPTVersion version in gptVersions)
+            {
+                Menu_AppendItem(menu, version.ToString().Replace('_', '.'), (sender, args) =>
+                {
+                    _version = version;
+                    DestroyIconCache();
+                    SetIconOverride(Icon);
+
+                }, true, version == _version);
+            }
         }
 
         private void OnReady(object sender, EventArgs e)
@@ -270,7 +300,22 @@ namespace GHPT.Components
         /// You can add image files to your project resources and access them like this:
         /// return Resources.IconForThisComponent;
         /// </summary>
-        protected override System.Drawing.Bitmap Icon => Resources.Icons.dark_logo_24x24;
+        protected override System.Drawing.Bitmap Icon
+        {
+            get
+            {
+                if (_version == GPTVersion.GPT3_5)
+                {
+                    return Resources.Icons.light_logo_gpt3_5_24x24;
+                }
+                else if (_version == GPTVersion.GPT4)
+                {
+                    return Resources.Icons.light_logo_gpt4_24x24;
+                }
+
+                return Resources.Icons.light_logo_24x24;
+            }
+        }
 
         /// <summary>
         /// Each component must have a unique Guid to identify it. 
