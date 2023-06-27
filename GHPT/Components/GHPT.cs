@@ -4,7 +4,6 @@ using GHPT.Utils;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
 using System.Collections;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,8 +13,8 @@ namespace GHPT.Components
     {
         private GH_Document _doc;
         private PromptData _data;
-        private bool _spinning;
         private GPTVersion _version;
+        private readonly Spinner _spinner;
 
         private string previousPrompt = string.Empty;
 
@@ -36,6 +35,7 @@ namespace GHPT.Components
             _queue = new Queue();
             _version = GPTVersion.GPT4;
             this.Message = _version.ToString().Replace('_', '.');
+            _spinner = new Spinner(this);
         }
 
         public override void CreateAttributes()
@@ -58,7 +58,7 @@ namespace GHPT.Components
                     _version = version;
                     DestroyIconCache();
                     SetIconOverride(Icon);
-                    this.Message = _version.ToString().Replace('_', '.');
+                    SetGPTMessage();
                     Grasshopper.Instances.RedrawCanvas();
 
                 }, true, version == _version);
@@ -67,13 +67,19 @@ namespace GHPT.Components
 
         private void OnReady(object sender, EventArgs e)
         {
-            this._spinning = false;
+            _spinner.Stop();
             this.AddComponents();
             this.ConnectComponents();
             Grasshopper.Instances.RedrawCanvas();
             Rhino.RhinoDoc.ActiveDoc.Views.Redraw();
+            SetGPTMessage();
 
             _doc.NewSolution(true, GH_SolutionMode.Silent);
+        }
+
+        private void SetGPTMessage()
+        {
+            this.Message = _version.ToString().Replace('_', '.');
         }
 
         /// <summary>
@@ -130,16 +136,9 @@ namespace GHPT.Components
                 return;
             previousPrompt = prompt;
 
-            if (this._spinning)
-            {
-                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Please don't interrupt me when I'm thinking");
-                return;
-            }
-
-            this._spinning = true;
             Task.Run(() =>
             {
-                this.RunSpinner();
+                _spinner.Start();
             });
             _data = await PromptUtils.AskQuestion(prompt);
             Ready?.Invoke(this, new EventArgs());
@@ -224,7 +223,6 @@ namespace GHPT.Components
             string code = (string)this._queue.Dequeue();
             var pivot = new System.Drawing.PointF(this.Attributes.Pivot.X - 250, this.Attributes.Pivot.Y - 50);
             this.CreatePanel(code, "GHPT Prompt", pivot);
-
         }
 
         public void CreateAdvicePanel(string advice)
@@ -238,7 +236,6 @@ namespace GHPT.Components
             this.CreatePanel(content, nickName, pivot, System.Drawing.Color.FromArgb(255, 255, 250, 90));
         }
 
-
         public void CreatePanel(string content, string nickName, System.Drawing.PointF pivot, System.Drawing.Color color)
         {
             GH_Panel panel = new();
@@ -251,46 +248,6 @@ namespace GHPT.Components
 
             _doc.AddObject(panel, false);
             panel.Attributes.Pivot = pivot;
-        }
-
-        public void AdvanceSpinner()
-        {
-            List<string> sequence = new()
-            {
-                "Thinking: \\", "Thinking: |", "Thinking: /", "Thinking: -"
-            };
-
-            if (string.IsNullOrEmpty(this.Message))
-            {
-                this.Message = sequence[0];
-            }
-            else
-            {
-                int index = sequence.IndexOf(this.Message);
-                int nextIndex = index + 1;
-                if (nextIndex >= sequence.Count)
-                {
-                    nextIndex = 0;
-                }
-
-                this.Message = sequence[nextIndex];
-            }
-            Grasshopper.Instances.ActiveCanvas.BeginInvoke(new Action(() =>
-            {
-                Grasshopper.Instances.RedrawCanvas();
-            }));
-
-
-        }
-
-        public void RunSpinner()
-        {
-            while (_spinning)
-            {
-                this.AdvanceSpinner();
-                Thread.Sleep(200);
-            }
-            this.Message = _version.ToString().Replace('_', '.');
         }
 
         /// <summary>
