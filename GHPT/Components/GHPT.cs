@@ -30,7 +30,7 @@ namespace GHPT.Components
         public GHPT()
           : base("GHPT", "GHPT",
             "A component that lets you use ChatGPT to instantiate Grasshopper snippets from a prompt",
-            "GHPT", "Prompt")
+            "Extra", "GHPT")
         {
             Ready += OnReady;
             _queue = new Queue();
