@@ -1,4 +1,5 @@
 using GHPT.Configs;
+using GHPT.IO;
 using GHPT.Prompts;
 using GHPT.UI;
 using GHPT.Utils;
@@ -14,7 +15,6 @@ namespace GHPT.Components
     {
         private GH_Document _doc;
         private PromptData _data;
-        private GPTVersion _version;
         private readonly Spinner _spinner;
 
         private string previousPrompt = string.Empty;
@@ -34,8 +34,7 @@ namespace GHPT.Components
         {
             Ready += OnReady;
             _queue = new Queue();
-            _version = GPTVersion.GPT4;
-            this.Message = _version.ToString().Replace('_', '.');
+            this.Message = ConfigUtil.CurrentConfig.Model;
             _spinner = new Spinner(this);
         }
 
@@ -50,20 +49,33 @@ namespace GHPT.Components
 
             Menu_AppendSeparator(menu);
 
-            var gptVersions = Enum.GetValues(typeof(GPTVersion)).Cast<GPTVersion>().ToList();
-            gptVersions.Remove(GPTVersion.None);
-            foreach (GPTVersion version in gptVersions)
+            var configs = ConfigUtil.ConfigList;
+            foreach (GPTConfig config in configs)
             {
-                Menu_AppendItem(menu, version.ToString().Replace('_', '.'), (sender, args) =>
+                Menu_AppendItem(menu, config.Model, (sender, args) =>
                 {
-                    _version = version;
+                    ConfigUtil.CurrentConfig.Model = config.Model;
                     DestroyIconCache();
                     SetIconOverride(Icon);
                     SetGPTMessage();
                     Grasshopper.Instances.RedrawCanvas();
 
-                }, true, version == _version);
+                }, true, ConfigUtil.CurrentConfig.Model == config.Model);
             }
+
+            Menu_AppendItem(menu, "Add Config", (sender, args) =>
+            {
+                var modal = new ConfigPromptModal();
+                var result = modal.ShowModal();
+
+                if (result == Eto.Forms.DialogResult.Cancel)
+                    return;
+
+                if (!modal.config.IsValid())
+                    return;
+
+                ConfigUtil.SaveConfig(modal.config);
+            });
         }
 
         private void OnReady(object sender, EventArgs e)
@@ -80,7 +92,7 @@ namespace GHPT.Components
 
         private void SetGPTMessage()
         {
-            this.Message = _version.ToString().Replace('_', '.');
+            this.Message = ConfigUtil.CurrentConfig.Model.ToString().Replace('_', '.');
         }
 
         /// <summary>
@@ -264,7 +276,7 @@ namespace GHPT.Components
         /// You can add image files to your project resources and access them like this:
         /// return Resources.IconForThisComponent;
         /// </summary>
-        protected override System.Drawing.Bitmap Icon => _version switch
+        protected override System.Drawing.Bitmap Icon => ConfigUtil.CurrentConfig.Version switch
         {
             GPTVersion.GPT3_5 => Resources.Icons.light_logo_gpt3_5_24x24,
             GPTVersion.GPT4 => Resources.Icons.light_logo_gpt4_24x24,

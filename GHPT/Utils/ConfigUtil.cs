@@ -10,7 +10,11 @@ namespace GHPT.Utils
         public static GPTConfig CurrentConfig;
         public static List<GPTConfig> ConfigList = new();
 
-        public static bool CheckConfiguration() => CurrentConfig.IsValid();
+        public static bool CheckConfiguration()
+        {
+            return PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out var allSettings) &&
+                allSettings.ChildKeys.Count > 0;
+        }
 
         public static void LoadConfigs()
         {
