@@ -32,8 +32,8 @@ namespace GHPT.UI
             var model_version = new ComboBox { DataStore = Models.ModelOptions.Keys, SelectedIndex = 1 };
             model_version.SelectedValueChanged += (sender, e) =>
             {
-                config.Model = model_version.Text;
-                config.Version = Models.ModelOptions.First(kvp => kvp.Key == model_version.Text).Value;
+                config.Model = model_version.SelectedValue.ToString();
+                config.Version = Models.ModelOptions.First(kvp => kvp.Key == config.Model).Value;
             };
 
             config = new GPTConfig()

@@ -76,6 +76,20 @@ namespace GHPT.Utils
             configSettings.SetEnumValue(nameof(GPTConfig.Version), config.Version);
         }
 
+        public static void RemoveConfig(GPTConfig config)
+        {
+            ConfigList.Remove(config);
+
+            PersistentSettings allSettings = null;
+            if (!PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out allSettings))
+            {
+                allSettings = PersistentSettings.RhinoAppSettings.AddChild(nameof(GPTConfig));
+                allSettings.HiddenFromUserInterface = true;
+            }
+
+            allSettings.DeleteChild(config.Name);
+        }
+
         public static void PromptUserForConfig()
         {
             ConfigPromptWindow window = new();

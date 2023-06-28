@@ -36,6 +36,7 @@ namespace GHPT.Components
             _queue = new Queue();
             this.Message = ConfigUtil.CurrentConfig.Model;
             _spinner = new Spinner(this);
+            RegenerateComponentUI();
         }
 
         public override void CreateAttributes()
@@ -52,15 +53,12 @@ namespace GHPT.Components
             var configs = ConfigUtil.ConfigList;
             foreach (GPTConfig config in configs)
             {
-                Menu_AppendItem(menu, config.Model, (sender, args) =>
+                Menu_AppendItem(menu, config.Name, (sender, args) =>
                 {
-                    ConfigUtil.CurrentConfig.Model = config.Model;
-                    DestroyIconCache();
-                    SetIconOverride(Icon);
-                    SetGPTMessage();
-                    Grasshopper.Instances.RedrawCanvas();
+                    ConfigUtil.CurrentConfig = config;
+                    RegenerateComponentUI();
 
-                }, true, ConfigUtil.CurrentConfig.Model == config.Model);
+                }, true, ConfigUtil.CurrentConfig.Name == config.Name);
             }
 
             Menu_AppendItem(menu, "Add Config", (sender, args) =>
@@ -75,7 +73,16 @@ namespace GHPT.Components
                     return;
 
                 ConfigUtil.SaveConfig(modal.config);
+                ConfigUtil.CurrentConfig = ConfigUtil.ConfigList.Last();
+                RegenerateComponentUI();
             });
+
+            Menu_AppendItem(menu, "Remove Current Config", (sender, args) =>
+            {
+                ConfigUtil.RemoveConfig(ConfigUtil.CurrentConfig);
+                ConfigUtil.CurrentConfig = ConfigUtil.ConfigList.First();
+                RegenerateComponentUI();
+            }, ConfigUtil.ConfigList.Count > 0);
         }
 
         private void OnReady(object sender, EventArgs e)
@@ -83,16 +90,22 @@ namespace GHPT.Components
             _spinner.Stop();
             this.AddComponents();
             this.ConnectComponents();
-            Grasshopper.Instances.RedrawCanvas();
-            Rhino.RhinoDoc.ActiveDoc.Views.Redraw();
-            SetGPTMessage();
+            RegenerateComponentUI();
 
             _doc.NewSolution(true, GH_SolutionMode.Silent);
         }
 
+        private void RegenerateComponentUI()
+        {
+            DestroyIconCache();
+            SetIconOverride(Icon);
+            SetGPTMessage();
+            Grasshopper.Instances.RedrawCanvas();
+        }
+
         private void SetGPTMessage()
         {
-            this.Message = ConfigUtil.CurrentConfig.Model.ToString().Replace('_', '.');
+            this.Message = ConfigUtil.CurrentConfig.Model?.ToString()?.Replace('_', '.');
         }
 
         /// <summary>
@@ -175,8 +188,6 @@ namespace GHPT.Components
             if (_data.Additions is null)
                 return;
 
-
-
             // Compute tiers
             Dictionary<int, List<Addition>> buckets = new();
 
@@ -205,8 +216,6 @@ namespace GHPT.Components
                     y += yIncrement;
                 }
             }
-
-
         }
 
         private void ConnectComponents()
