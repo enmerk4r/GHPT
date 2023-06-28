@@ -21,7 +21,7 @@ namespace UnitTests
             }
             else
             {
-                ConfigUtil.LoadConfig();
+                ConfigUtil.LoadConfigs();
             }
 
             Assert.That(ConfigUtil.CheckConfiguration(), Is.True);

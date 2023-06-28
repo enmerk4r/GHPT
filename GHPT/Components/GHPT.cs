@@ -1,3 +1,4 @@
+using GHPT.Configs;
 using GHPT.Prompts;
 using GHPT.UI;
 using GHPT.Utils;
@@ -117,8 +118,10 @@ namespace GHPT.Components
             }
             else
             {
-                ConfigUtil.LoadConfig();
+                ConfigUtil.LoadConfigs();
             }
+
+            ConfigUtil.LoadConfigs();
 
             string prompt = string.Empty;
             double temperature = 0.7;

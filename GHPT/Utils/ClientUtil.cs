@@ -1,7 +1,6 @@
 ﻿using GHPT.IO;
 using Newtonsoft.Json;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GHPT.Utils
@@ -13,12 +12,12 @@ namespace GHPT.Utils
             var url = "https://api.openai.com/v1/chat/completions";
 
             AskPayload payload = new(
-                ConfigUtil.GptModel,
+                ConfigUtil.CurrentConfig.Model,
                 prompt,
                 temperature);
 
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ConfigUtil.GptToken}");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ConfigUtil.CurrentConfig.Token}");
 
             var response = await client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
 

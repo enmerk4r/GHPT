@@ -1,47 +1,71 @@
-﻿using GHPT.IO;
-using Newtonsoft.Json;
-using System.IO;
-using System.Reflection;
+﻿using GHPT.Configs;
+using GHPT.IO;
+using Rhino;
 
 namespace GHPT.Utils
 {
     public static class ConfigUtil
     {
-        private static GPTConfig _config;
-        public static string ConfigFileName => "ghpt.json";
 
-        public static string AssemblyLocation => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        public static string ConfigurationFilePath => Path.Combine(AssemblyLocation, ConfigFileName);
-
-        public static string GptToken => _config?.Token;
-        public static string GptModel => _config.Model;
+        public static GPTConfig CurrentConfig;
+        public static List<GPTConfig> ConfigList { get; private set; }
 
         public static bool CheckConfiguration()
         {
-            if (File.Exists(ConfigurationFilePath))
-            {
-                return true;
-            }
-
-            return false;
+            return PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out var allSettings) &&
+                allSettings.ChildKeys.Count > 0;
         }
 
-        public static void LoadConfig()
+        public static void LoadConfigs()
         {
-            using (StreamReader reader = new(ConfigurationFilePath))
+            PersistentSettings allSettings = null;
+            if (!PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out allSettings))
             {
-                string contents = reader.ReadToEnd();
-                _config = JsonConvert.DeserializeObject<GPTConfig>(contents);
+                allSettings = PersistentSettings.RhinoAppSettings.AddChild(nameof(GPTConfig));
+                allSettings.HiddenFromUserInterface = true;
+            }
+
+            ConfigList = new(allSettings.ChildKeys.Count);
+
+            var childKeys = allSettings.ChildKeys;
+            foreach (string childKey in allSettings.ChildKeys)
+            {
+                if (!allSettings.TryGetChild(childKey, out PersistentSettings childSettings))
+                    continue;
+
+                GPTConfig config = GetConfigFromSettings(childKey, childSettings);
+                ConfigList.Add(config);
             }
         }
 
-        public static void SaveConfig()
+        private static GPTConfig GetConfigFromSettings(string name, PersistentSettings childSettings)
         {
-            using (StreamWriter writer = new(ConfigurationFilePath))
+            childSettings.TryGetEnumValue(nameof(GPTConfig.Version), out GPTVersion version);
+            childSettings.TryGetString(nameof(GPTConfig.Token), out string token);
+            childSettings.TryGetString(nameof(GPTConfig.Model), out string model);
+
+            return new(name, version, token, model);
+        }
+
+        public static void SaveConfig(GPTConfig config)
+        {
+            PersistentSettings allSettings = null;
+            if (!PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out allSettings))
             {
-                string config = JsonConvert.SerializeObject(_config);
-                writer.Write(config);
+                allSettings = PersistentSettings.RhinoAppSettings.AddChild(nameof(GPTConfig));
+                allSettings.HiddenFromUserInterface = true;
             }
+
+            PersistentSettings configSettings = null;
+            if (!allSettings.TryGetChild(config.Name, out configSettings))
+            {
+                configSettings = allSettings.AddChild(config.Name);
+                configSettings.HiddenFromUserInterface = true;
+            }
+
+            configSettings.SetString(nameof(GPTConfig.Token), config.Token);
+            configSettings.SetString(nameof(GPTConfig.Model), config.Model);
+            configSettings.SetEnumValue(nameof(GPTConfig.Version), config.Version);
         }
 
         public static void PromptUserForConfig()
@@ -49,9 +73,9 @@ namespace GHPT.Utils
             ConfigPromptWindow window = new();
             window.ShowDialog();
 
-            _config = window.Config;
+            SaveConfig(window.Config);
 
-            SaveConfig();
+            CurrentConfig = window.Config;
         }
     }
 }

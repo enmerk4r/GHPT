@@ -1,19 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using GHPT.Configs;
 
 namespace GHPT.IO
 {
-    public class GPTConfig
+    public readonly struct GPTConfig
     {
-        [JsonProperty("token")]
-        public string Token { get; set; }
+        public readonly string Name;
 
-        [JsonProperty("model")]
-        public string Model { get; set; }
+        public readonly string Token;
 
-        public GPTConfig() { }
+        public readonly string Model;
 
-        public GPTConfig(string token, string model)
+        public readonly GPTVersion Version;
+
+        public GPTConfig(string name, GPTVersion version, string token, string model)
         {
+            this.Name = name;
+            this.Version = version;
             this.Token = token;
             this.Model = model;
         }
