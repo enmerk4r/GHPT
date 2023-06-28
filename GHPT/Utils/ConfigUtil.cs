@@ -8,13 +8,9 @@ namespace GHPT.Utils
     {
 
         public static GPTConfig CurrentConfig;
-        public static List<GPTConfig> ConfigList { get; private set; }
+        public static List<GPTConfig> ConfigList = new();
 
-        public static bool CheckConfiguration()
-        {
-            return PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out var allSettings) &&
-                allSettings.ChildKeys.Count > 0;
-        }
+        public static bool CheckConfiguration() => CurrentConfig.IsValid();
 
         public static void LoadConfigs()
         {
@@ -34,8 +30,11 @@ namespace GHPT.Utils
                     continue;
 
                 GPTConfig config = GetConfigFromSettings(childKey, childSettings);
-                ConfigList.Add(config);
+                if (!ConfigList.Contains(config))
+                    ConfigList.Add(config);
             }
+
+            CurrentConfig = ConfigList.First();
         }
 
         private static GPTConfig GetConfigFromSettings(string name, PersistentSettings childSettings)
@@ -49,6 +48,11 @@ namespace GHPT.Utils
 
         public static void SaveConfig(GPTConfig config)
         {
+            if (!ConfigList.Contains(config))
+            {
+                ConfigList.Add(config);
+            }
+
             PersistentSettings allSettings = null;
             if (!PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out allSettings))
             {

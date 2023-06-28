@@ -114,11 +114,16 @@ namespace GHPT.Components
 
             if (!configured)
             {
-                ConfigUtil.PromptUserForConfig();
-            }
-            else
-            {
-                ConfigUtil.LoadConfigs();
+                var modal = new ConfigPromptModal();
+                var result = modal.ShowModal();
+
+                if (result == Eto.Forms.DialogResult.Cancel)
+                    return;
+
+                if (!modal.config.IsValid())
+                    return;
+
+                ConfigUtil.SaveConfig(modal.config);
             }
 
             ConfigUtil.LoadConfigs();

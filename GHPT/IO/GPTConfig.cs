@@ -2,15 +2,15 @@
 
 namespace GHPT.IO
 {
-    public readonly struct GPTConfig
+    public struct GPTConfig
     {
-        public readonly string Name;
+        public string Name { get; set; }
 
-        public readonly string Token;
+        public string Token { get; set; }
 
-        public readonly string Model;
+        public string Model { get; set; }
 
-        public readonly GPTVersion Version;
+        public GPTVersion Version { get; set; }
 
         public GPTConfig(string name, GPTVersion version, string token, string model)
         {
@@ -19,5 +19,12 @@ namespace GHPT.IO
             this.Token = token;
             this.Model = model;
         }
+
+        internal bool IsValid() =>
+            !string.IsNullOrEmpty(Name) &&
+            !string.IsNullOrEmpty(Token) &&
+            !string.IsNullOrEmpty(Model) &&
+            Version != GPTVersion.None;
+
     }
 }

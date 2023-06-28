@@ -2,14 +2,14 @@
 {
     public static class Models
     {
-        public static string[] ModelList = new string[]
+        public static Dictionary<string, GPTVersion> ModelOptions = new()
         {
-            "gpt-4",
-            "gpt-3.5-turbo",
-            "gpt-3.5-turbo-0301",
-            "gpt-3.5-turbo-0613",
-            "gpt-3.5-turbo-16k",
-            "gpt-3.5-turbo-16k-0613",
+            { "gpt-4", GPTVersion.GPT4 },
+            { "gpt-3.5-turbo", GPTVersion.GPT3_5 },
+            { "gpt-3.5-turbo-0301", GPTVersion.GPT3_5 },
+            { "gpt-3.5-turbo-0613", GPTVersion.GPT3_5 },
+            { "gpt-3.5-turbo-16k", GPTVersion.GPT3_5 },
+            { "gpt-3.5-turbo-16k-0613", GPTVersion.GPT3_5 },
         };
     }
 }
