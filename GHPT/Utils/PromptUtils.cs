@@ -60,7 +60,7 @@ namespace GHPT.Utils
                 {
                     Additions = new List<Addition>(),
                     Connections = new List<ConnectionPairing>(),
-                    Advice = "Exception: " + ex.Message
+                    Advice = PostprocessErrorMessage(ex.Message)
                 };
             }
         }
@@ -87,11 +87,36 @@ namespace GHPT.Utils
             }
             catch (Exception ex)
             {
+                string msg = ex.Message;
+
+
+
                 return new PromptData()
                 {
-                    Advice = ex.Message
+                    Advice = PostprocessErrorMessage(ex.Message)
                 };
             }
+        }
+
+        public static string PostprocessErrorMessage(string msg)
+        {
+            string l = msg.ToLower();
+
+            if (l.Contains("429 too many requests"))
+            {
+                return "Error: Looks like you've exceeded the maximum number of requests per minute "
+                    + "for your account. Please, consult the OpenAI API documentation regarding "
+                    + "rate limits and API quotas: \n\nhttps://platform.openai.com/docs/guides/rate-limits/overview\n\n Also, refer "
+                    + "to the Rate Limits section of your personal page on OpenAI's Developer portal: \n\nhttps://platform.openai.com/account/rate-limits\n\n"
+                    + msg;
+            }
+            else if (l.Contains("the model") && l.Contains("does not exist"))
+            {
+                return "Error: Looks like your account does not have access to the requested model. Please, take a look "
+                    + "at your OpenAI Developer account to view the list of available models and rate limits: \n\nhttps://platform.openai.com/account/rate-limits\n\n"
+                    + msg;
+            }
+            else return msg;
         }
 
     }
