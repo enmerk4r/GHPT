@@ -1,3 +1,4 @@
+using GH_IO.Serialization;
 using GHPT.Configs;
 using GHPT.IO;
 using GHPT.Prompts;
@@ -18,6 +19,15 @@ namespace GHPT.Components
         private readonly Spinner _spinner;
 
         private string previousPrompt = string.Empty;
+               
+        private bool allowDupPrompt = false;
+
+        public bool PromptOverride
+        {
+            get { return allowDupPrompt; }
+            set { allowDupPrompt = value; }
+        }
+
 
         private readonly Queue _queue;
         /// <summary>
@@ -83,7 +93,30 @@ namespace GHPT.Components
                 ConfigUtil.CurrentConfig = ConfigUtil.ConfigList.First();
                 RegenerateComponentUI();
             }, ConfigUtil.ConfigList.Count > 0);
+
+            Menu_AppendSeparator(menu);
+
+            ToolStripMenuItem item = Menu_AppendItem(menu, "Duplicate Prompt Once", Menu_PromptOverride, true, false);
+            item.ToolTipText = "Duplicate prompts are usually disallowed by this component.";
+            }
+        private void Menu_PromptOverride(object sender, EventArgs e)
+        {
+            //RecordUndoEvent("PromptOverride");
+            PromptOverride = !PromptOverride;
+            ExpireSolution(true);
         }
+        /*
+        public override bool Write(GH_IWriter writer)
+        {
+            writer.SetBoolean("PromptOverride", PromptOverride);
+            return base.Write(writer);
+        }
+        public override bool Read(GH_IReader reader)
+        {
+            PromptOverride = reader.GetBoolean("PromptOverride");
+            return base.Read(reader);
+        }
+         */
 
         private void OnReady(object sender, EventArgs e)
         {
@@ -165,9 +198,10 @@ namespace GHPT.Components
                 return;
             }
 
-            if (prompt == previousPrompt)
+            if (prompt == previousPrompt && !PromptOverride)
                 return;
             previousPrompt = prompt;
+            PromptOverride = false;
 
             Task.Run(() =>
             {
