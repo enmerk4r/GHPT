@@ -247,6 +247,16 @@ Always use the given format, avoid any devitation.
 				"Id": 10,
 				"ParameterName": "Result"
 			}
+		},
+		{
+		"To": {
+		"Id": 9,
+		"ParameterName": "Axis"
+		},
+		"From":{
+		"Id": 6,
+		"ParameterName": "Line"
+		}
 		}
 	]
 }
