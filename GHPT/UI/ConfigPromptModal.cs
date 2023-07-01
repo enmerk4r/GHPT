@@ -82,6 +82,8 @@ namespace GHPT.UI
                   new TableRow(defaults_layout)
                 }
             };
+
+            Topmost = true;
         }
 
         protected override void OnLoadComplete(EventArgs e)
