@@ -2,8 +2,7 @@
 This project sets out to find a way to leverage the power of ChatGPT to create Grasshopper definitions.
 It was developed at the AEC Tech Seattle Hackathon 2023 hosted by Thornton Tomasetti CORE studio and LMN
 
-![GHPT-logo-animation-medium](https://github.com/enmerk4r/GHPT/assets/25551621/f6959c8c-979c-476c-8d90-6f6362561693)
-
+![0 1 4_README](https://github.com/enmerk4r/GHPT/assets/9583495/91b22bdd-ac9f-4f0e-8a1a-727ddb44ff53)
 
 ## Team
 - [Callum Sykes](https://github.com/clicketyclackety) - StructureCraft
@@ -20,7 +19,7 @@ Your options for installing GHPT are as follows:
 
 ## Token Configuration
 Once GhPT is downloaded and installed, the OpenAI token key needs to be set up through the pop-up Token Configuration Window. To use the OpenAI API, you need to provide an API key and specify a GPT model.
-![GHPT-Configuration](https://github.com/enmerk4r/GHPT/assets/114206649/39b36d31-ba99-49c1-8ede-27b7b2ebf0b6)
+![0 1 4_README_API](https://github.com/enmerk4r/GHPT/assets/9583495/117d2ee2-82f8-44a8-bc57-26baa23fc1c3)
 
 
 You can sign up for OpenAI API on [this page](https://openai.com/product). Once you signed up and logged in, open [this page](https://platform.openai.com/account/api-keys) and select Create new secret key. You can then copy the key by clicking on the green text Copy, make sure to save this key somewhere else as you will not be able to access it again.
@@ -28,23 +27,25 @@ You can sign up for OpenAI API on [this page](https://openai.com/product). Once 
 
 
 Paste the key in the GPT Token box.
-![GHPT-Configuration 00_00_13_24 Still003](https://github.com/enmerk4r/GHPT/assets/114206649/88b0864e-346c-4891-8ab8-24461db66d12)
+
+![image](https://github.com/enmerk4r/GHPT/assets/9583495/96648b0a-3cdb-4662-8b8f-d92c97a8b417)
 
 
 Go to [this page](https://platform.openai.com/account/rate-limits) to check for your access to different GPT models (currently we are using the more advanced model GPT-4 that has limited access) but model GPT-3.5 should also work well.
 ![gpt model](https://github.com/enmerk4r/GHPT/assets/114206649/fd61e092-9a65-484b-b394-93e22a1263cf)
 
 
-Paste your model in the GPT model box.
-![GHPT-Configuration 00_00_16_10 Still004](https://github.com/enmerk4r/GHPT/assets/114206649/942d251c-6fa7-4433-9990-8fd4f9eba4be)
+Select your model from the dropdown menu
+
+![image](https://github.com/enmerk4r/GHPT/assets/9583495/6c01db32-d336-4848-aa67-3fa7a2129b2c)
+
 
 
 ## How to use
 
 Creating a component and initiating a request to the ChatGPT API can be accomplished via shortcut; Prompts can be written directly into the grasshopper component search function.
 
-![write prompt](https://github.com/enmerk4r/GHPT/assets/42498952/675929fc-69c9-4576-bd21-5db935857435)
-
+![image](https://github.com/enmerk4r/GHPT/assets/9583495/4cb263b5-6a15-4f1d-98cf-4d6e65c93977)
 
 To take advantage of this functionality, double click an empty space on the canvas and type a prompt in the following format:
 
