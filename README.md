@@ -25,6 +25,9 @@ Once GhPT is downloaded and installed, the OpenAI token key needs to be set up t
 You can sign up for OpenAI API on [this page](https://openai.com/product). Once you signed up and logged in, open [this page](https://platform.openai.com/account/api-keys) and select Create new secret key. You can then copy the key by clicking on the green text Copy, make sure to save this key somewhere else as you will not be able to access it again.
 ![image](https://github.com/enmerk4r/GHPT/assets/114206649/66441be3-3c87-4de1-81ca-71a1565347ce)
 
+Select your model from the dropdown menu
+
+![image](https://github.com/enmerk4r/GHPT/assets/9583495/6c01db32-d336-4848-aa67-3fa7a2129b2c)
 
 Paste the key in the GPT Token box.
 
@@ -33,11 +36,6 @@ Paste the key in the GPT Token box.
 
 Go to [this page](https://platform.openai.com/account/rate-limits) to check for your access to different GPT models (currently we are using the more advanced model GPT-4 that has limited access) but model GPT-3.5 should also work well.
 ![gpt model](https://github.com/enmerk4r/GHPT/assets/114206649/fd61e092-9a65-484b-b394-93e22a1263cf)
-
-
-Select your model from the dropdown menu
-
-![image](https://github.com/enmerk4r/GHPT/assets/9583495/6c01db32-d336-4848-aa67-3fa7a2129b2c)
 
 
 
