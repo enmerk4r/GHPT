@@ -1,57 +1,108 @@
-﻿using GHPT.IO;
-using Newtonsoft.Json;
-using System.IO;
-using System.Reflection;
+﻿using GHPT.Configs;
+using GHPT.IO;
+using Rhino;
 
 namespace GHPT.Utils
 {
-    public static class ConfigUtil
-    {
-        private static GPTConfig _config;
-        public static string ConfigFileName => "ghpt.json";
+	public static class ConfigUtil
+	{
+		private static List<GPTConfig> ConfigList = new();
+		public static IReadOnlyList<GPTConfig> Configs => ConfigList;
 
-        public static string AssemblyLocation => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        public static string ConfigurationFilePath => Path.Combine(AssemblyLocation, ConfigFileName);
+		public static bool CheckConfiguration()
+		{
+			return PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out var allSettings) &&
+				allSettings.ChildKeys.Count > 0;
+		}
 
-        public static string GptToken => _config?.Token;
-        public static string GptModel => _config.Model;
+		public static void LoadConfigs()
+		{
+			PersistentSettings allSettings = null;
+			if (!PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out allSettings))
+			{
+				allSettings = PersistentSettings.RhinoAppSettings.AddChild(nameof(GPTConfig));
+				allSettings.HiddenFromUserInterface = true;
+			}
 
-        public static bool CheckConfiguration()
-        {
-            if (File.Exists(ConfigurationFilePath))
-            {
-                return true;
-            }
+			ConfigList = new(allSettings.ChildKeys.Count);
 
-            return false;
-        }
+			var childKeys = allSettings.ChildKeys;
+			foreach (string childKey in allSettings.ChildKeys)
+			{
+				if (!allSettings.TryGetChild(childKey, out PersistentSettings childSettings))
+					continue;
 
-        public static void LoadConfig()
-        {
-            using (StreamReader reader = new(ConfigurationFilePath))
-            {
-                string contents = reader.ReadToEnd();
-                _config = JsonConvert.DeserializeObject<GPTConfig>(contents);
-            }
-        }
+				GPTConfig config = GetConfigFromSettings(childKey, childSettings);
+				if (!ConfigList.Contains(config))
+				{
+					ConfigList.Add(config);
+					ConfigAdded?.Invoke(null, new ConfigArgs(config));
+				}
+			}
+		}
 
-        public static void SaveConfig()
-        {
-            using (StreamWriter writer = new(ConfigurationFilePath))
-            {
-                string config = JsonConvert.SerializeObject(_config);
-                writer.Write(config);
-            }
-        }
+		private static GPTConfig GetConfigFromSettings(string name, PersistentSettings childSettings)
+		{
+			childSettings.TryGetEnumValue(nameof(GPTConfig.Version), out GPTVersion version);
+			childSettings.TryGetString(nameof(GPTConfig.Token), out string token);
+			childSettings.TryGetString(nameof(GPTConfig.Model), out string model);
 
-        public static void PromptUserForConfig()
-        {
-            ConfigPromptWindow window = new();
-            window.ShowDialog();
+			return new(name, version, token, model);
+		}
 
-            _config = window.Config;
+		public static void SaveConfig(GPTConfig config)
+		{
+			if (!ConfigList.Contains(config))
+			{
+				ConfigList.Add(config);
+				ConfigAdded?.Invoke(null, new ConfigArgs(config));
+			}
 
-            SaveConfig();
-        }
-    }
+			PersistentSettings allSettings = null;
+			if (!PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out allSettings))
+			{
+				allSettings = PersistentSettings.RhinoAppSettings.AddChild(nameof(GPTConfig));
+				allSettings.HiddenFromUserInterface = true;
+			}
+
+			PersistentSettings configSettings = null;
+			if (!allSettings.TryGetChild(config.Name, out configSettings))
+			{
+				configSettings = allSettings.AddChild(config.Name);
+				configSettings.HiddenFromUserInterface = true;
+			}
+
+			configSettings.SetString(nameof(GPTConfig.Token), config.Token);
+			configSettings.SetString(nameof(GPTConfig.Model), config.Model);
+			configSettings.SetEnumValue(nameof(GPTConfig.Version), config.Version);
+		}
+
+		public static void RemoveConfig(GPTConfig config)
+		{
+			ConfigList.Remove(config);
+			ConfigRemoved?.Invoke(null, new ConfigArgs(config));
+
+			PersistentSettings allSettings = null;
+			if (!PersistentSettings.RhinoAppSettings.TryGetChild(nameof(GPTConfig), out allSettings))
+			{
+				allSettings = PersistentSettings.RhinoAppSettings.AddChild(nameof(GPTConfig));
+				allSettings.HiddenFromUserInterface = true;
+			}
+
+			allSettings.DeleteChild(config.Name);
+		}
+
+		internal static EventHandler<ConfigArgs> ConfigAdded;
+		internal static EventHandler<ConfigArgs> ConfigRemoved;
+
+		internal class ConfigArgs : EventArgs
+		{
+			internal readonly GPTConfig Config;
+			internal ConfigArgs(GPTConfig config)
+			{
+				Config = config;
+			}
+		}
+
+	}
 }

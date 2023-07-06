@@ -1,4 +1,4 @@
-﻿namespace GHPT.Components
+﻿namespace GHPT.Configs
 {
 
     public enum GPTVersion

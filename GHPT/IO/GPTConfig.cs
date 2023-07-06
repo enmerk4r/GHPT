@@ -1,21 +1,30 @@
-﻿using Newtonsoft.Json;
+﻿using GHPT.Configs;
 
 namespace GHPT.IO
 {
-    public class GPTConfig
+    public struct GPTConfig
     {
-        [JsonProperty("token")]
+        public string Name { get; set; }
+
         public string Token { get; set; }
 
-        [JsonProperty("model")]
         public string Model { get; set; }
 
-        public GPTConfig() { }
+        public GPTVersion Version { get; set; }
 
-        public GPTConfig(string token, string model)
+        public GPTConfig(string name, GPTVersion version, string token, string model)
         {
+            this.Name = name;
+            this.Version = version;
             this.Token = token;
             this.Model = model;
         }
+
+        internal bool IsValid() =>
+            !string.IsNullOrEmpty(Name) &&
+            !string.IsNullOrEmpty(Token) &&
+            !string.IsNullOrEmpty(Model) &&
+            Version != GPTVersion.None;
+
     }
 }
