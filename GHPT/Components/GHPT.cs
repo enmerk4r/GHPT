@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace GHPT.Components
 {
-	public class GHPT : GH_Component, IGH_InitCodeAware
+public class GHPT : GH_Component, IGH_InitCodeAware
 	{
 		private GH_Document _doc;
 		private PromptData _data;
@@ -21,6 +21,14 @@ namespace GHPT.Components
 		public GPTConfig CurrentConfig;
 
 		private string previousPrompt = string.Empty;
+    
+    private bool allowDupPrompt = false;
+
+    public bool PromptOverride
+    {
+        get { return allowDupPrompt; }
+        set { allowDupPrompt = value; }
+    }
 
 		private readonly Queue _queue;
 		/// <summary>
@@ -141,7 +149,18 @@ namespace GHPT.Components
 				CurrentConfig = ConfigUtil.Configs.FirstOrDefault();
 				RegenerateComponentUI();
 			}, ConfigUtil.Configs.Count > 0);
-		}
+      
+		  Menu_AppendSeparator(menu);
+
+      ToolStripMenuItem item = Menu_AppendItem(menu, "Duplicate Prompt Once", Menu_PromptOverride, true, false);
+      item.ToolTipText = "Duplicate prompts are usually disallowed by this component.";
+    }
+    
+    private void Menu_PromptOverride(object sender, EventArgs e)
+    {
+        PromptOverride = !PromptOverride;
+        ExpireSolution(true);
+    }
 
 		private void OnReady(object sender, EventArgs e)
 		{
@@ -205,9 +224,10 @@ namespace GHPT.Components
 				return;
 			}
 
-			if (prompt == previousPrompt)
-				return;
-			previousPrompt = prompt;
+      if (prompt == previousPrompt && !PromptOverride)
+          return;
+      previousPrompt = prompt;
+      PromptOverride = false;
 
 			Task.Run(() =>
 			{
