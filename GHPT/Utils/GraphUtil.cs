@@ -112,8 +112,9 @@ namespace GHPT.Utils
 
         private static IGH_ObjectProxy GetObject(string name)
         {
-            IList<IGH_ObjectProxy> results = new List<IGH_ObjectProxy>();
-            results = Instances.ComponentServer.FindObjects(new string[] { name }, 10);
+            IGH_ObjectProxy[] results = Array.Empty<IGH_ObjectProxy>();
+            double[] resultWeights = new double[] { 0 };
+            Instances.ComponentServer.FindObjects(new string[] { name }, 10, ref results, ref resultWeights);
 
             var myProxies = results.Where(ghpo => ghpo.Kind == GH_ObjectType.CompiledObject);
 

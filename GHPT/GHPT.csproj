@@ -6,8 +6,8 @@
     <Title>GHPT</Title>
     <Description>Description of GHPT</Description>
     <TargetExt>.gha</TargetExt>
-    <LangVersion>latest</LangVersion>
-	    <Nullable>annotations</Nullable>
+    <LangVersion>11</LangVersion>
+	<Nullable>annotations</Nullable>
   </PropertyGroup>
 	
   <ItemGroup>
@@ -25,7 +25,7 @@
   
   <ItemGroup>
     <PackageReference Include="FuzzySharp" Version="2.0.2" />
-    <PackageReference Include="Grasshopper" Version="6.35.21222.17001" IncludeAssets="compile;build" />
+    <PackageReference Include="Grasshopper" Version="7.13.21348.13001" IncludeAssets="compile;build" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Text.Json" Version="7.0.3" />
   </ItemGroup>
