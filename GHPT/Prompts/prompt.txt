@@ -15,20 +15,20 @@ Always use the given format, avoid any devitation.
 		{
 			"Name": "Number Slider",
 			"Id" : 1, // This number must be unique
-			"value": 0..25..100, // This is optional
+			"value": 0..25..100 // This is optional
 		},
 		{
 			"Name": "Number Slider",
 			"Id" : 2,
-			"value": -50..25..100, // This is optional
-		},
+			"value": -50..25..100 // This is optional
+		}
 	],
 	"Connections" : [
 		{
 			"To": { // Addition
 				"Id": 3,
 				"ParameterName": "A"
-			}
+			},
 			"From": { // Number Slider,
 				"Id": 1,
 				"ParameterName": "number"
@@ -38,7 +38,7 @@ Always use the given format, avoid any devitation.
 			"To": { // Addition
 				"Id": 3,
 				"ParameterName": "B"
-			}
+			},
 			"From": { // Number Slider,
 				"Id": 2,
 				"ParameterName": "number"
@@ -71,34 +71,32 @@ Always use the given format, avoid any devitation.
 			"To": {
 				"Id": 2,
 				"ParameterName": "Geometry"
-			}
+			},
 			"From": {
 				"Id": 1,
 				"ParameterName": "Circle"
-			},
-		},
-		"Connections" : [
-			{
-				"To": {
-					"Id": 3,
-					"ParameterName": "Curves"
-				},
-				"From": {
-					"Id": 1,
-					"ParameterName": "Circle"
-				}
-			},
-			{
-				"To": {
-					"Id": 3,
-					"ParameterName": "Curves"
-				},
-				"From": {
-					"Id": 2,
-					"ParameterName": "Geometry"
-				}
 			}
-		]
+		},
+		{
+			"To": {
+				"Id": 3,
+				"ParameterName": "Curves"
+			},
+			"From": {
+				"Id": 1,
+				"ParameterName": "Circle"
+			}
+		},
+		{
+			"To": {
+				"Id": 3,
+				"ParameterName": "Curves"
+			},
+			"From": {
+				"Id": 2,
+				"ParameterName": "Geometry"
+			}
+		}
 	]
 }
 
@@ -115,11 +113,11 @@ Always use the given format, avoid any devitation.
 		{
 			"Name": "Number Slider",
 			"Id": 2,
-			"Value": "0..50..100",
+			"Value": "0..50..100"
 		},
 		{
 			"Name": "Unit Z",
-			"Id": 3,
+			"Id": 3
 		},
 		{
 			"Name": "Extrusion",
@@ -155,8 +153,8 @@ Always use the given format, avoid any devitation.
 		{
 			"Name": "Brep Join",
 			"Id" : 11
-		},
-	]
+		}
+	],
 	"Connections" : [
 		{
 			"To": {
@@ -249,18 +247,17 @@ Always use the given format, avoid any devitation.
 			}
 		},
 		{
-		"To": {
-		"Id": 9,
-		"ParameterName": "Axis"
-		},
-		"From":{
-		"Id": 6,
-		"ParameterName": "Line"
-		}
+		        "To": {
+		                "Id": 9,
+		                "ParameterName": "Axis"
+	        	},
+		        "From":{
+		                "Id": 6,
+		                "ParameterName": "Line"
+		        }
 		}
 	]
 }
 
 // Question: {QUESTION}
 // Reasoning: 
-// JSON:
