@@ -9,7 +9,8 @@ namespace GHPT.Utils
 	{
 		public static async Task<ResponsePayload> Ask(GPTConfig config, string prompt, double temperature = 0.7)
 		{
-			var url = "https://api.openai.com/v1/chat/completions";
+			//var url = "https://api.openai.com/v1/chat/completions";
+			var url = "https://api.together.xyz/inference";
 
 			AskPayload payload = new(
 				config.Model,
