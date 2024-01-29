@@ -233,7 +233,7 @@ public class GHPT : GH_Component, IGH_InitCodeAware
 			{
 				_spinner.Start();
 			});
-			_data = await PromptUtils.AskQuestion(CurrentConfig, prompt);
+			_data = await PromptUtils.AskQuestion(CurrentConfig, prompt, temperature);
 			Ready?.Invoke(this, new EventArgs());
 		}
 

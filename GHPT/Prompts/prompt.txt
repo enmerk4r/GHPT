@@ -9,21 +9,22 @@ Always use the given format, avoid any devitation.
 // Question : How do I add two numbers inside of Grasshopper?
 // Reasoning: To add two numbers we need to Add. There is an Addition component that performs this function. We need to create two numbers the user can edit, we can use the Number Slider for both numbers. And then we can Connections all of the components together
 // JSON: 
+```json
 {
 	"Advice": "Make sure to set the number sliders to the correct value",
 	"Additions": [
 		{
 			"Name": "Number Slider",
-			"Id" : 1, // This number must be unique
+			"Id": 1, // This number must be unique
 			"value": 0..25..100 // This is optional
 		},
 		{
 			"Name": "Number Slider",
-			"Id" : 2,
+			"Id": 2,
 			"value": -50..25..100 // This is optional
 		}
 	],
-	"Connections" : [
+	"Connections": [
 		{
 			"To": { // Addition
 				"Id": 3,
@@ -46,27 +47,29 @@ Always use the given format, avoid any devitation.
 		}
 	]
 }
+```
 
 // Question: How do I create a cup shape in grasshopper
 // Reasoning: To create a cup shape in Grasshopper, we"ll first create a circle using a "Circle CNR" component, which will act as the base of the cup. Then, we will use a "Move" component to move the base circle vertically to create the upper rim of the cup. To create the body of the cup, we"ll loft these two circles using a "Loft" component.
 // JSON:
+```json
 {
 	"Advice": "Remember, to properly define the cup\"s dimensions using the number slider",
-	"Additions" : [
+	"Additions": [
 		{
 			"Name": "Circle CNR",
-			"Id" : 1
+			"Id": 1
 		},
 		{
 			"Name": "Move",
-			"Id" : 2
+			"Id": 2
 		},
 		{
 			"Name": "Loft",
-			"Id" : 3
+			"Id": 3
 		}
 	],
-	"Connections" : [
+	"Connections": [
 		{
 			"To": {
 				"Id": 2,
@@ -99,16 +102,18 @@ Always use the given format, avoid any devitation.
 		}
 	]
 }
+```
 
 // Question: How do I create a twisty skyscraper?
 // Reasoning: We can create the "twist" using the twist component, so lets extrude a rectangle and twist it!
 // JSON:
+```json
 {
 	"Advice": "Make sure to use reasonable inputs or the skyscraper will look weird",
 	"Additions": [
 		{
 			"Name": "Rectangle",
-			"Id" : 1
+			"Id": 1
 		},
 		{
 			"Name": "Number Slider",
@@ -121,7 +126,7 @@ Always use the given format, avoid any devitation.
 		},
 		{
 			"Name": "Extrusion",
-			"Id" : 4
+			"Id": 4
 		},
 		{
 			"Name": "Number Slider",
@@ -129,7 +134,7 @@ Always use the given format, avoid any devitation.
 			"Value": "0..90..360"
 		},
 		{
-			"Name" : "Line",
+			"Name": "Line",
 			"Id": 6
 		},
 		{
@@ -144,18 +149,18 @@ Always use the given format, avoid any devitation.
 		},
 		{
 			"Name": "Twist",
-			"Id" : 9
+			"Id": 9
 		},
 		{
 			"Name": "Solid Union",
-			"Id" : 10
+			"Id": 10
 		},
 		{
 			"Name": "Brep Join",
-			"Id" : 11
+			"Id": 11
 		}
 	],
-	"Connections" : [
+	"Connections": [
 		{
 			"To": {
 				"Id": 4,
@@ -247,17 +252,18 @@ Always use the given format, avoid any devitation.
 			}
 		},
 		{
-		        "To": {
-		                "Id": 9,
-		                "ParameterName": "Axis"
-	        	},
-		        "From":{
-		                "Id": 6,
-		                "ParameterName": "Line"
-		        }
+		    "To": {
+		        "Id": 9,
+		        "ParameterName": "Axis"
+	        },
+		    "From": {
+		        "Id": 6,
+		        "ParameterName": "Line"
+		    }
 		}
 	]
 }
+```
 
 // Question: {QUESTION}
 // Reasoning: 

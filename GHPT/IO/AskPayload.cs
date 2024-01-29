@@ -4,6 +4,9 @@ namespace GHPT.IO
 {
     public class AskPayload
     {
+        [JsonProperty("stop")]
+        public string[] Stop { get; set; } = {"// Question:", "```\n"};
+
         [JsonProperty("model")]
         public string Model { get; set; }
 
