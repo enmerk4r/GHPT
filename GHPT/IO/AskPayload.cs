@@ -21,21 +21,21 @@ namespace GHPT.IO
 
         }
 
-        public AskPayload(string model, List<Message> messages, double temperature = 0.7)
+        public AskPayload(string model, List<Message> messages, double temperature = 0.0)
         {
             this.Model = model;
             this.Messages = messages;
             this.Temperature = temperature;
         }
 
-        public AskPayload(string model, Message msg, double temperature = 0.7)
+        public AskPayload(string model, Message msg, double temperature = 0.0)
         {
             this.Model = model;
             this.Messages = new List<Message> { msg };
             this.Temperature = temperature;
         }
 
-        public AskPayload(string model, string msg, double temperature = 0.7)
+        public AskPayload(string model, string msg, double temperature = 0.0)
         {
             this.Model = model;
             this.Messages = new List<Message> { new Message(msg) };

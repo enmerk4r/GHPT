@@ -191,7 +191,7 @@ public class GHPT : GH_Component, IGH_InitCodeAware
 		protected override void RegisterInputParams(GH_InputParamManager pManager)
 		{
 			pManager.AddTextParameter("Prompt", "P", "LLM prompt for instantiating components", GH_ParamAccess.item);
-			pManager.AddNumberParameter("Temperature", "T", "Controls how \"creatively\" the network responds to your prompt", GH_ParamAccess.item, 0.7);
+			pManager.AddNumberParameter("Temperature", "T", "Controls how \"creatively\" the network responds to your prompt", GH_ParamAccess.item, 0.0);
 
 			pManager[1].Optional = true;
 		}
@@ -213,7 +213,7 @@ public class GHPT : GH_Component, IGH_InitCodeAware
 			_doc = OnPingDocument();
 
 			string prompt = string.Empty;
-			double temperature = 0.7;
+			double temperature = 0.0;
 
 			DA.GetData(0, ref prompt);
 			DA.GetData(1, ref temperature);
