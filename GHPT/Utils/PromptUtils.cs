@@ -9,11 +9,11 @@ namespace GHPT.Utils
 	public static class PromptUtils
 	{
 
-		private const string SPLITTER = "// JSON: ";
+		private static readonly string[] SPLITTER = { "```json", "```" };
 
 		public static string GetChatGPTJson(string chatGPTResponse)
 		{
-			string[] jsons = chatGPTResponse.Split(new string[] { SPLITTER },
+			string[] jsons = chatGPTResponse.Split( SPLITTER,
 										System.StringSplitOptions.RemoveEmptyEntries);
 
 			string latestJson = jsons.Last();
@@ -63,12 +63,12 @@ namespace GHPT.Utils
 			}
 		}
 
-		public static async Task<PromptData> AskQuestion(GPTConfig config, string question)
+		public static async Task<PromptData> AskQuestion(GPTConfig config, string question, double temperature)
 		{
 			try
 			{
 				string prompt = Prompt.GetPrompt(question);
-				var payload = await ClientUtil.Ask(config, prompt);
+				var payload = await ClientUtil.Ask(config, prompt, temperature);
 				string payloadJson = payload.Choices.FirstOrDefault().Message.Content;
 
 				if (payloadJson.ToLowerInvariant().Contains(Prompt.TOO_COMPLEX.ToLowerInvariant()))
@@ -79,7 +79,8 @@ namespace GHPT.Utils
 					};
 				}
 
-				var returnValue = GetPromptDataFromResponse(GetChatGPTJson(payloadJson));
+				var json = GetChatGPTJson(payloadJson);
+                var returnValue = GetPromptDataFromResponse(json);
 
 				return returnValue;
 			}

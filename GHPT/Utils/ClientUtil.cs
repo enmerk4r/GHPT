@@ -7,7 +7,7 @@ namespace GHPT.Utils
 {
 	public static class ClientUtil
 	{
-		public static async Task<ResponsePayload> Ask(GPTConfig config, string prompt, double temperature = 0.7)
+		public static async Task<ResponsePayload> Ask(GPTConfig config, string prompt, double temperature = 0.0)
 		{
 			var url = "https://api.openai.com/v1/chat/completions";
 
